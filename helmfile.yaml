@@ -1,0 +1,20 @@
+environments:
+  envy:
+
+---
+
+releases:
+  - name: {{ .Environment.Name }}
+    namespace: "{{ .Environment.Name }}"
+    chart: .
+    version: "{{ default "latest" (env "VERSION") }}"
+    values:
+      - environments/{{ .Environment.Name }}/values.yaml
+
+---
+
+helmDefaults:
+  atomic: true
+  cleanupOnFail: true
+  wait: true
+  timeout: 60

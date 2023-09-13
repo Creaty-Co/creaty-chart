@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: redis-configmap
+  namespace: {{ .Release.Name }}
+data:
+  redis.conf: |-
+    maxmemory {{ .Values.redis.maxmemory }}
+    maxmemory-policy {{ .Values.redis.maxmemory_policy }}
+    appendonly yes
+    appendfsync always
