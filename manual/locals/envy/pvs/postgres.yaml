@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: envy-postgres-pv
+  namespace: envy
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: do-block-storage-xfs-retain
+  csi:
+    driver: dobs.csi.digitalocean.com
+    volumeHandle: bc73502b-52ce-11ee-9932-0a58ac1204e6
+    fsType: xfs
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: envy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: do-block-storage-xfs-retain
+  volumeName: envy-postgres-pv
