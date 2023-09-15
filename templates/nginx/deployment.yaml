@@ -23,7 +23,9 @@ spec:
           command: [ bash ]
           args:
             - -c
-            - ls /web && ls /web-dir && mv /web/* /web-dir && ls /web-dir
+            - mv
+            - /web/*
+            - /web-dir
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
