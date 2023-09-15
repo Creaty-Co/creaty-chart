@@ -31,16 +31,14 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: nginx-config
-              mountPath: /etc/nginx/
+            - name: nginx-config-main
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
             - name: web-dir
               mountPath: /etc/nginx/html/web/
       volumes:
-        - name: nginx-config
+        - name: nginx-config-main
           configMap:
             name: nginx-configmap
-            items:
-              - key: nginx.conf
-                path: nginx.conf
         - name: web-dir
           emptyDir: {}
