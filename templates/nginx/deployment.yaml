@@ -21,18 +21,7 @@ spec:
         - name: init-web
           image: ghcr.io/creaty-co/creaty-web/web:latest
           command:
-            - ls
-            - -al
-            - /web
-            - &&
-            - cp
-            - -r
-            - /web/*
-            - /html/
-            - &&
-            - ls
-            - -al
-            - /html
+            - ls -al /web/ && cp -r /web/* /html/ && ls -al /html/
           volumeMounts:
             - name: web-dir
               mountPath: /html/
