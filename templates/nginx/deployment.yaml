@@ -22,7 +22,8 @@ spec:
           image: ghcr.io/creaty-co/creaty-web/web:latest
           command: [ mv ]
           args:
-            - /web/* /web-dir
+            - /web/*
+            - /web-dir
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
