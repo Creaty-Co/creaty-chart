@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: envy
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: envy
@@ -28,4 +30,5 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true
       - ServerSideApply=true

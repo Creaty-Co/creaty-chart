@@ -3,10 +3,11 @@ kind: Ingress
 metadata:
   name: nginx-ingress
   namespace: {{ .Release.Name }}
+
 spec:
   ingressClassName: nginx
   rules:
-    - host: {{ .Values.subdomain | default .Release.Name }}.creaty.club
+    - host: {{ template "web_domain" . }}
       http:
         paths:
           - path: /

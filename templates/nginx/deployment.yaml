@@ -13,8 +13,28 @@ spec:
       labels:
         app: nginx
     spec:
+      initContainers:
+        - name: init-web
+          image: ghcr.io/creaty-co/creaty-web/web:latest
+          volumeMounts:
+            - name: web-dir
+              mountPath: /web/
       containers:
         - name: nginx
-          image: registry.digitalocean.com/creaty/k8s-nginx:latest
+          image: nginx:1.25.2
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/
+            - name: html-web
+              mountPath: /usr/share/nginx/html/web/
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: nginx-configmap
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+        - name: web-dir
+          emptyDir: {}
