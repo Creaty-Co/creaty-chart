@@ -12,6 +12,10 @@ spec:
     metadata:
       labels:
         app: nginx
+      annotations:
+        configmapHash: {{
+          include (print $.Template.BasePath "/nginx/configmap.yaml") . | sha256sum
+        }}
     spec:
       initContainers:
         - name: init-web
