@@ -27,7 +27,7 @@ spec:
           volumeMounts:
             - name: nginx-config
               mountPath: /etc/nginx/conf.d/
-            - name: html-web
+            - name: web-dir
               mountPath: /usr/share/nginx/html/web/
       volumes:
         - name: nginx-config
