@@ -20,8 +20,10 @@ spec:
       initContainers:
         - name: init-web
           image: ghcr.io/creaty-co/creaty-web/web:latest
-          command: [ cp ]
-          args: [ -r, /web/*, /web-dir/ ]
+          command: [ bash ]
+          args:
+            - -c
+            - ls /web && ls /web-dir && mv /web/* /web-dir && ls /web-dir
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
