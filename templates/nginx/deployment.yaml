@@ -22,6 +22,7 @@ spec:
           image: ghcr.io/creaty-co/creaty-web/web:latest
           command: [ ls ]
           args:
+            - -al
             - /web/
           volumeMounts:
             - name: web-dir
