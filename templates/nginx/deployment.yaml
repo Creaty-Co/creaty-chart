@@ -20,7 +20,7 @@ spec:
       initContainers:
         - name: init-web
           image: ghcr.io/creaty-co/creaty-web/web:latest
-          command: cp
+          command: [ cp ]
           args:
             - -r
             - /web/*
