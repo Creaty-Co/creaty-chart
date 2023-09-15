@@ -20,7 +20,6 @@ spec:
       initContainers:
         - name: init-web
           image: ghcr.io/creaty-co/creaty-web/web:latest
-          command: [ bash ]
           args:
             - -c
             - mv /web/* /web-dir
@@ -43,4 +42,5 @@ spec:
           configMap:
             name: nginx-configmap
         - name: web-dir
-          emptyDir: {}
+          emptyDir:
+            medium: memory
