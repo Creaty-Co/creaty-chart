@@ -43,4 +43,4 @@ spec:
             name: nginx-configmap
         - name: web-dir
           emptyDir:
-            medium: memory
+            medium: Memory
