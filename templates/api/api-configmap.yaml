@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-configmap
+  namespace: {{ .Release.Name }}
+data:
+  envs:
+    # site
+    WEB_DOMAIN: "local.host"
+    API_DOMAIN: "api.local.host"
+    # django
+    SECRET_KEY: "secret"
+    DEBUG: "1"
+    TEST: "0"
+    ANON_THROTTLE_RATE: "10/s"
+    USE_BROWSABLE_API: "1"
+    USE_DEBUG_TOOLBAR: "0"
+    # cache
+    REDIS_URL: "redis://redis:6379/0"
+    # email
+    EMAIL_URL: ""
+    # celery_email
+    EMAIL_BACKEND: "console"
+    # celery[broker]
+    CELERY_BROKER_URL: "redis://redis:6379/0"
+    CELERY_TASK_EAGER: "0"
+    CELERY_REDIS_MAX_CONNECTIONS: "1000"
+    CELERY_BROKER_POOL_LIMIT: "1000"
+    # celery[result]
+    CELERY_RESULT_BACKEND: "redis://redis:6379/0"
+    # media
+    CLOUDINARY_URL: "cloudinary://0:stub@_"
+    CLOUDINARY_PREFIX: "local"
+    # sentry
+    SENTRY_DSN: ""
+    SENTRY_ENVIRONMENT: ""
+    SENTRY_RELEASE: ""
+    # db
+    DATABASE_URL: "psql://pg:password@db:5432/db"
+    # redirects
+    REDIRECT_ON_UNSUBSCRIBE: "http://local.dev"
+    # social_auth
+    GOOGLE_APP_ID: ""
+    GOOGLE_APP_SECRET: ""
+    # logs
+    LOG_FORMATTERS: "api=%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s,web=WEB     | %(asctime)s: %(message)s"
+    LOG_PRETTY: "1"
+    LOG_MAX_LENGTH: "130"
+    LOG_REQUESTS: "1"
+    LOG_CONF: "api=api_console;gunicorn.server=web_console;daphne.server=web_console"
+    LOG_LEVEL: "api=DEBUG"
+    # money
+    FIXER_ACCESS_KEY: ""
+    # gunicorn
+    GUNICORN_WORKERS: "2"
+    # calcom
+    CAL_DOMAIN: "cal.local.host"
+    # urls
+    NEXT_PUBLIC_WEBAPP_URL: "https://cal.local.host"
+    NEXT_AUTH_URL: "https://cal.local.host/api/auth"
+    # secrets
+    NEXTAUTH_SECRET: "yU01E8DMvrtq1O1ccH45uyy5uBJ2X6iA"
+    CALENDSO_ENCRYPTION_KEY: "yU01E8DMvrtq1O1ccH45uyy5uBJ2X6iA"
+    # email
+    EMAIL_SERVER_HOST: "smtp.gmail.com"
+    EMAIL_SERVER_PORT: "465"
+    EMAIL_SERVER_USER: "hi@creaty.club"
+    EMAIL_FROM: "<hi@creaty.club>Creaty.Co"

@@ -44,7 +44,7 @@ data:
         types_hash_max_size 512;
 
         server {
-            server_name {{ include "web_domain" . }};
+            server_name {{ template "web_domain" . }};
             listen 80;
 
             location / {
@@ -54,6 +54,17 @@ data:
                 expires 1d;
                 add_header Pragma "public";
                 add_header Cache-Control "public, max-age=86400";
+            }
+        }
+
+        server {
+            server_name {{ template "api_domain" . }};
+            listen 80;
+
+            gzip_static on;
+
+            location /static {
+                alias /etc/nginx/html/api/static/;
             }
         }
 

@@ -3,7 +3,6 @@ kind: Ingress
 metadata:
   name: nginx-ingress
   namespace: {{ .Release.Name }}
-
 spec:
   ingressClassName: nginx
   rules:
@@ -17,3 +16,13 @@ spec:
                 name: nginx
                 port:
                   number: 80
+    - host: {{ template "api_domain" . }}
+      http:
+        paths:
+        - path: /static
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx
+              port:
+                number: 80

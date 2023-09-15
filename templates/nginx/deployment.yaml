@@ -26,6 +26,24 @@ spec:
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
+        - name: init-api
+          image: ghcr.io/creaty-co/creaty-api/api:latest
+          command: [ python, manage.py ]
+          args:
+            - collectstatic
+            - --noinput
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: POSTGRES_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: api-configmap
+          volumeMounts:
+            - name: api-static-dir
+              mountPath: /api/static/
       containers:
         - name: nginx
           image: nginx:1.25.2
@@ -37,10 +55,13 @@ spec:
               subPath: nginx.conf
             - name: web-dir
               mountPath: /etc/nginx/html/web/
+            - name: api-static-dir
+              mountPath: /etc/nginx/html/api/static/
       volumes:
         - name: nginx-config-main
           configMap:
             name: nginx-configmap
         - name: web-dir
-          emptyDir:
-            medium: Memory
+          emptyDir: {}
+        - name: api-static-dir
+          emptyDir: {}
