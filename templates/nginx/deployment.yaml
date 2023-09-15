@@ -20,14 +20,12 @@ spec:
       initContainers:
         - name: init-web
           image: ghcr.io/creaty-co/creaty-web/web:latest
-          command: [ cp ]
+          command: [ ls ]
           args:
-            - -r
-            - /web/*
-            - /html/
+            - /web/
           volumeMounts:
             - name: web-dir
-              mountPath: /html/
+              mountPath: /web/
       containers:
         - name: nginx
           image: nginx:1.25.2
