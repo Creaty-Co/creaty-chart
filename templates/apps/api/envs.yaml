@@ -18,7 +18,7 @@ data:
   REDIS_URL: redis://redis:6379/0
   ### email
   EMAIL_HOST: smtp.gmail.com
-  EMAIL_PORT: 465
+  EMAIL_PORT: "465"
   EMAIL_HOST_USER: hi@creaty.club
   # EMAIL_HOST_PASSWORD: <from secrets>
   EMAIL_FROM: <hi@creaty.club>Creaty.Co
