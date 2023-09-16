@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: api
@@ -14,9 +14,12 @@ spec:
     spec:
       containers:
         - name: api
+          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
           command: [ gunicorn, api.wsgi ]
           args: [ -c, gunicorn/config.py ]
           ports:
             - name: api-port
               containerPort: 8000
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          resources:
+            limits:
+              memory: 250Mi
