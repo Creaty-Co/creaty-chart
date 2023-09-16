@@ -23,13 +23,11 @@ spec:
           image: postgres:15.3
           args: [ -c, config_file=/etc/postgresql/postgresql.conf ]
           env:
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgres-secrets
-                  key: POSTGRES_PASSWORD
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
+          envFrom:
+            - secretRef:
+                name: postgres-secrets
           ports:
             - name: postgres-port
               containerPort: 5432
@@ -47,6 +45,7 @@ spec:
         - name: configs
           configMap:
             name: postgres-configs
+            defaultMode: 0400
             items:
               - key: postgresql.conf
                 path: postgresql.conf
