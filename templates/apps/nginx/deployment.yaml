@@ -45,7 +45,7 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: configs-main
+            - name: configs
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
             - name: web-dir
