@@ -1,9 +1,7 @@
 # custom
 
 /.idea/
-!/manual/secrets/
-/manual/secrets/*
-!/manual/secrets/locals/
+/manual/secrets/
 
 ### Windows template
 # Windows thumbnail cache files

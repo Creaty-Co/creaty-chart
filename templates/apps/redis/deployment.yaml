@@ -12,8 +12,8 @@ spec:
     metadata:
       labels:
         app: redis
-    annotations:
-      helm.sh/revision: {{ .Release.Revision }}
+      annotations:
+        helm.sh/revision: {{ .Release.Revision }}
     spec:
       containers:
         - name: redis
