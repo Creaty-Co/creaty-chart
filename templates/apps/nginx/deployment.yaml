@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
-  namespace: {{ .Release.Name }}
+  namespace: {{ .Release.Revision }}
 spec:
   replicas: 1
   selector:
@@ -13,9 +13,7 @@ spec:
       labels:
         app: nginx
       annotations:
-        configmapHash: {{
-          include (print $.Template.BasePath "/nginx/configmap.yaml") . | sha256sum
-        }}
+        helm.sh/revision: {{ .Release.Revision }}
     spec:
       initContainers:
         - name: init-web
@@ -28,19 +26,19 @@ spec:
               mountPath: /web-dir/
         - name: init-api
           image: ghcr.io/creaty-co/creaty-api/api:latest
-          command: [ python, manage.py ]
-          args:
-            - collectstatic
-            - --noinput
+{{/*          command: [ python, manage.py ]*/}}
+{{/*          args: [ collectstatic, --noinput ]*/}}
+          command: [ env ]
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-secrets
                   key: POSTGRES_PASSWORD
           envFrom:
             - configMapRef:
-                name: api-configmap
+                name: api-envs
+{{/*          {{ template "email_envs" . }}*/}}
           volumeMounts:
             - name: api-static-dir
               mountPath: /api/static/
@@ -50,7 +48,7 @@ spec:
           ports:
             - containerPort: 80
           volumeMounts:
-            - name: nginx-config-main
+            - name: configs-main
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
             - name: web-dir
@@ -58,9 +56,9 @@ spec:
             - name: api-static-dir
               mountPath: /etc/nginx/html/api/static/
       volumes:
-        - name: nginx-config-main
+        - name: configs
           configMap:
-            name: nginx-configmap
+            name: nginx-configs
         - name: web-dir
           emptyDir: {}
         - name: api-static-dir

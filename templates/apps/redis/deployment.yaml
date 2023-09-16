@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: redis
+    annotations:
+      helm.sh/revision: {{ .Release.Revision }}
     spec:
       containers:
         - name: redis
@@ -20,12 +22,12 @@ spec:
             - name: redis-port
               containerPort: 6379
           volumeMounts:
-            - name: redis-config
+            - name: configs
               mountPath: /usr/local/etc/redis/
       volumes:
-        - name: redis-config
+        - name: configs
           configMap:
-            name: redis-configmap
+            name: redis-configs
             items:
               - key: redis.conf
                 path: redis.conf

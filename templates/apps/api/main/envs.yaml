@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-envs
+  namespace: {{ .Release.Name }}
+data:
+  ### site
+  WEB_DOMAIN: {{ template "web_domain" . }}
+  API_DOMAIN: {{ template "api_domain" . }}
+  ### django
+  # SECRET_KEY: <from secrets>
+  DEBUG: "1"
+  TEST: "0"
+  ANON_THROTTLE_RATE: 50/s
+  USE_BROWSABLE_API: "1"
+  USE_DEBUG_TOOLBAR: "0"
+  ### cache
+  REDIS_URL: redis://redis:6379/0
+  ### email
+  # EMAIL_URL: <from secrets>
+  ### celery_email
+  EMAIL_BACKEND: smtp
+  ### celery[broker]
+  CELERY_BROKER_URL: redis://redis:6379/0
+  CELERY_TASK_EAGER: "0"
+  CELERY_REDIS_MAX_CONNECTIONS: "1000"
+  CELERY_BROKER_POOL_LIMIT: "1000"
+  ### celery[result]
+  CELERY_RESULT_BACKEND: redis://redis:6379/0
+  ### media
+  # CLOUDINARY_URL: <from secrets>
+  CLOUDINARY_PREFIX: local
+  ### sentry
+  # SENTRY_DSN: <from secrets>
+  SENTRY_ENVIRONMENT: ""
+  SENTRY_RELEASE: ""
+  ### db
+  # DATABASE_URL: psql://pg:<POSTGRES_PASSWORD from secrets>@postgres:5432/db
+  ### redirects
+  REDIRECT_ON_UNSUBSCRIBE: http://local.dev
+  ### social_auth
+  GOOGLE_APP_ID: ""
+  # GOOGLE_APP_SECRET: <from secrets>
+  ### logs
+  LOG_FORMATTERS: >
+    api=%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>:
+    %(message)s,web=WEB     | %(asctime)s: %(message)s
+  LOG_PRETTY: "1"
+  LOG_MAX_LENGTH: "130"
+  LOG_REQUESTS: "1"
+  LOG_CONF: api=api_console;gunicorn.server=web_console;daphne.server=web_console
+  LOG_LEVEL: api=DEBUG
+  ### money
+  # FIXER_ACCESS_KEY: <from secrets>
+  ### gunicorn
+  GUNICORN_WORKERS: "2"

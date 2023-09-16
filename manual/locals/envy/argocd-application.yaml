@@ -16,7 +16,7 @@ spec:
     targetRevision: envy
     helm:
       valueFiles:
-        - "environments/envy/values.yaml"
+        - environments/envy/values.yaml
   syncPolicy:
     automated:
       prune: true

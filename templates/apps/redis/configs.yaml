@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: redis-configmap
+  name: redis-configs
   namespace: {{ .Release.Name }}
 data:
   redis.conf: |-

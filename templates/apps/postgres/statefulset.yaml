@@ -14,21 +14,19 @@ spec:
       labels:
         app: postgres
       annotations:
-        configmapHash: {{
-          include (print $.Template.BasePath "/postgres/configmap.yaml") . | sha256sum
-        }}
+        helm.sh/revision: {{ .Release.Revision }}
     spec:
       securityContext:
         fsGroup: 999
       containers:
         - name: postgres
           image: postgres:15.3
-          args: [ "-c", "config_file=/etc/postgresql/postgresql.conf" ]
+          args: [ -c, config_file=/etc/postgresql/postgresql.conf ]
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: postgres-secrets
                   key: POSTGRES_PASSWORD
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
@@ -36,24 +34,22 @@ spec:
             - name: postgres-port
               containerPort: 5432
           volumeMounts:
-            - name: postgres-data-volume
+            - name: data-volume
               mountPath: /var/lib/postgresql/data/
-            - name: postgres-config
+            - name: configs
               mountPath: /etc/postgresql/
-            - name: postgres-tls
+            - name: tls
               mountPath: /tls/
       volumes:
-        - name: postgres-data-volume
+        - name: data-volume
           persistentVolumeClaim:
             claimName: postgres-pvc
-        - name: postgres-config
+        - name: configs
           configMap:
-            name: postgres-configmap
-            defaultMode: 0400
+            name: postgres-configs
             items:
               - key: postgresql.conf
                 path: postgresql.conf
-        - name: postgres-tls
+        - name: tls
           secret:
             secretName: tls-secret
-            defaultMode: 0400
