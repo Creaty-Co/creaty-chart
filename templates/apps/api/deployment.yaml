@@ -16,4 +16,7 @@ spec:
         - name: api
           command: [ gunicorn, api.wsgi ]
           args: [ -c, gunicorn/config.py ]
+          ports:
+            - name: api-port
+              containerPort: 8000
           {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
