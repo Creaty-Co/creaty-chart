@@ -2,7 +2,6 @@
 {{/*kind: Ingress*/}}
 {{/*metadata:*/}}
 {{/*  name: api-ingress*/}}
-{{/*  namespace: {{ .Release.Name }}*/}}
 {{/*  annotations:*/}}
 {{/*    nginx.ingress.kubernetes.io/configuration-snippet: |*/}}
 {{/*      gzip on;*/}}
