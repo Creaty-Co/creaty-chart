@@ -52,5 +52,5 @@ spec:
                 path: postgresql.conf
         - name: tls
           secret:
-            defaultMode: 400
             secretName: tls-secret
+            defaultMode: 0400
