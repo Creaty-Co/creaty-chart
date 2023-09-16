@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: nginx
@@ -25,9 +25,8 @@ spec:
               mountPath: /web-dir/
         - name: init-api
           image: ghcr.io/creaty-co/creaty-api/api:latest
-{{/*          command: [ python, manage.py ]*/}}
-{{/*          args: [ collectstatic, --noinput ]*/}}
-          command: [ env ]
+          command: [ python, manage.py ]
+          args: [ collectstatic, --noinput ]
           env:
             - name: DATABASE_URL
               value: psql://pg:$(POSTGRES_PASSWORD)@postgres:5432/db
