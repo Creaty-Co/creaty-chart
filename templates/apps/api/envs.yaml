@@ -22,9 +22,8 @@ data:
   EMAIL_HOST_USER: hi@creaty.club
   # EMAIL_HOST_PASSWORD: <from secrets>
   EMAIL_FROM: <hi@creaty.club>Creaty.Co
-  EMAIL_URL: >
-    smtp+ssl://${EMAIL_HOST_USER}:${EMAIL_HOST_PASSWORD}
-    @${EMAIL_HOST}:${EMAIL_PORT}
+  EMAIL_URL: >-
+    smtp+ssl://${EMAIL_HOST_USER}:${EMAIL_HOST_PASSWORD}@${EMAIL_HOST}:${EMAIL_PORT}
   ### celery_email
   EMAIL_BACKEND: smtp
   ### celery[broker]
@@ -43,14 +42,15 @@ data:
   SENTRY_RELEASE: ""
   ### db
   # POSTGRES_PASSWORD: <from secrets>
-  DATABASE_URL: psql://pg:%{POSTGRES_PASSWORD}@postgres:5432/db
+  # DATABASE_URL: psql://pg:${POSTGRES_PASSWORD}@postgres:5432/db
   ### redirects
   REDIRECT_ON_UNSUBSCRIBE: http://local.dev
   ### social_auth
-  GOOGLE_APP_ID: ""
+  GOOGLE_APP_ID: >-
+    806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
   # GOOGLE_APP_SECRET: <from secrets>
   ### logs
-  LOG_FORMATTERS: >
+  LOG_FORMATTERS: >-
     api=%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>:
     %(message)s,web=WEB     | %(asctime)s: %(message)s
   LOG_PRETTY: "1"
