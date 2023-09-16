@@ -33,16 +33,16 @@ data:
   CELERY_RESULT_BACKEND: redis://redis:6379/0
   ### media
   # CLOUDINARY_URL: <from secrets>
-  CLOUDINARY_PREFIX: local
+  CLOUDINARY_PREFIX: {{ .Release.Name }}
   ### sentry
   # SENTRY_DSN: <from secrets>
-  SENTRY_ENVIRONMENT: ""
-  SENTRY_RELEASE: ""
+  SENTRY_ENVIRONMENT: dev  # FIXME: {{ .Release.Name }}
+  SENTRY_RELEASE: ""  # TODO
   ### db
   # POSTGRES_PASSWORD: <from secrets>
   # DATABASE_URL: psql://$(POSTGRES_USER):${POSTGRES_PASSWORD}@postgres:5432/$(POSTGRES_DB)
   ### redirects
-  REDIRECT_ON_UNSUBSCRIBE: http://local.dev
+  REDIRECT_ON_UNSUBSCRIBE: https://{{ template "api_domain" . }}
   ### social_auth
   GOOGLE_APP_ID: >-
     806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
@@ -55,7 +55,7 @@ data:
   LOG_MAX_LENGTH: "130"
   LOG_REQUESTS: "1"
   LOG_CONF: api=api_console;gunicorn.server=web_console;daphne.server=web_console
-  LOG_LEVEL: api=DEBUG
+  LOG_LEVEL: api=INFO
   ### money
   # FIXER_ACCESS_KEY: <from secrets>
   ### gunicorn

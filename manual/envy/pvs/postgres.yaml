@@ -12,7 +12,7 @@ spec:
   storageClassName: do-block-storage-xfs-retain
   csi:
     driver: dobs.csi.digitalocean.com
-    volumeHandle: bc73502b-52ce-11ee-9932-0a58ac1204e6
+    volumeHandle: d108af0e-54b9-11ee-9b4a-0a58ac120f6d
     fsType: xfs
 
 ---

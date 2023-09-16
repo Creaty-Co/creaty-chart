@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: migrate-
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrate
+          command: [ python, manage.py, migrate ]
+          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+      restartPolicy: Never

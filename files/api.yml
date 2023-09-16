@@ -1,0 +1,15 @@
+image: ghcr.io/creaty-co/creaty-api/api:latest
+env:
+  - name: DATABASE_URL
+    value: psql://pg:$(POSTGRES_PASSWORD)@postgres:5432/db
+  - name: EMAIL_URL
+    value: smtp+ssl://$(EMAIL_HOST_USER):$(EMAIL_HOST_PASSWORD)@$(EMAIL_HOST):$(EMAIL_PORT)
+envFrom:
+  - secretRef:
+      name: postgres-secrets
+  - secretRef:
+      name: api-secrets
+  - configMapRef:
+      name: postgres-envs
+  - configMapRef:
+      name: api-envs
