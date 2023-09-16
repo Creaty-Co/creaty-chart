@@ -23,7 +23,7 @@ data:
   # EMAIL_HOST_PASSWORD: <from secrets>
   EMAIL_FROM: <hi@creaty.club>Creaty.Co
   EMAIL_URL: >-
-    smtp+ssl://${EMAIL_HOST_USER}:${EMAIL_HOST_PASSWORD}@${EMAIL_HOST}:${EMAIL_PORT}
+    smtp+ssl://$(EMAIL_HOST_USER):$(EMAIL_HOST_PASSWORD)@$(EMAIL_HOST):$(EMAIL_PORT)
   ### celery_email
   EMAIL_BACKEND: smtp
   ### celery[broker]

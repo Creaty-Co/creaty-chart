@@ -31,7 +31,7 @@ spec:
           command: [ env ]
           env:
             - name: DATABASE_URL
-              value: psql://pg:${POSTGRES_PASSWORD}@postgres:5432/db
+              value: psql://pg:$(POSTGRES_PASSWORD)@postgres:5432/db
           envFrom:
             - secretRef:
                 name: postgres-secrets
