@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-ws-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-ws
+  template:
+    metadata:
+      labels:
+        app: api-ws
+    spec:
+      containers:
+        - name: api-ws
+          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          command: [ daphne, -b, 0.0.0.0, api.asgi:application ]
+          ports:
+            - name: api-ws-port
+              containerPort: 8000

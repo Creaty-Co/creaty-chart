@@ -26,3 +26,13 @@ spec:
                 name: api
                 port:
                   number: 80
+    - host: {{ template "api_domain" . }}
+      http:
+        paths:
+          - path: /ws
+            pathType: Prefix
+            backend:
+              service:
+                name: api-ws
+                port:
+                  number: 80

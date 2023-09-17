@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbeat-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cbeat
+  template:
+    metadata:
+      labels:
+        app: cbeat
+    spec:
+      containers:
+        - name: cbeat
+          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          command: [ celery, -A, api, beat, -S, django, -l, info ]

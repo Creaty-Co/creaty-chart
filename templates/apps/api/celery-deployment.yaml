@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery
+  template:
+    metadata:
+      labels:
+        app: celery
+    spec:
+      containers:
+        - name: celery
+          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          command: [ celery, -A, api, worker, -c, "2", -P, gevent, -l, info ]
