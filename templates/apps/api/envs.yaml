@@ -4,8 +4,8 @@ metadata:
   name: api-envs
 data:
   ### site
-  WEB_DOMAIN: {{ template "web_domain" . }}
-  API_DOMAIN: {{ template "api_domain" . }}
+  WEB_DOMAIN: {{ include "web_domain" . }}
+  API_DOMAIN: {{ include "api_domain" . }}
   ### django
   # SECRET_KEY: <from secrets>
   DEBUG: "1"
@@ -20,7 +20,6 @@ data:
   EMAIL_PORT: "465"
   EMAIL_HOST_USER: hi@creaty.club
   # EMAIL_HOST_PASSWORD: <from secrets>
-  EMAIL_FROM: <hi@creaty.club>Creaty.Co
   # EMAIL_URL: smtp+ssl://$(EMAIL_HOST_USER):$(EMAIL_HOST_PASSWORD)@$(EMAIL_HOST):$(EMAIL_PORT)
   ### celery_email
   EMAIL_BACKEND: smtp
@@ -42,7 +41,7 @@ data:
   # POSTGRES_PASSWORD: <from secrets>
   # DATABASE_URL: psql://$(POSTGRES_USER):${POSTGRES_PASSWORD}@postgres:5432/$(POSTGRES_DB)
   ### redirects
-  REDIRECT_ON_UNSUBSCRIBE: https://{{ template "api_domain" . }}
+  REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
   ### social_auth
   GOOGLE_APP_ID: >-
     806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com

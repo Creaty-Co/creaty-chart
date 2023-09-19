@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cal-web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cal-web
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+  template:
+    metadata:
+      labels:
+        app: cal-web
+    spec:
+      containers:
+        - name: cal-web
+          {{- tpl (.Files.Get "files/cal.yml") (merge . (dict
+            "NEXT_AUTH_URL" (tpl "https://{{ include \"cal_domain\" . }}/api/auth" .)
+            "NEXT_PUBLIC_WEBAPP_URL" (tpl "https://{{ include \"cal_domain\" . }}" .)
+          )) | nindent 10 -}}
+          ports:
+            - name: cal-web-port
+              containerPort: 3000

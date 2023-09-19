@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cal-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cal-api
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+  template:
+    metadata:
+      labels:
+        app: cal-api
+    spec:
+      containers:
+        - name: cal-api
+          {{- tpl (.Files.Get "files/cal.yml") (merge . (dict
+            "NEXT_AUTH_URL" "http://cal-api"
+            "NEXT_PUBLIC_WEBAPP_URL" "http://cal-api/api/auth"
+          )) | nindent 10 -}}
+          ports:
+            - name: cal-api-port
+              containerPort: 3000

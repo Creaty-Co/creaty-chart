@@ -7,6 +7,8 @@ spec:
   selector:
     matchLabels:
       app: celery
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
   template:
     metadata:
       labels:

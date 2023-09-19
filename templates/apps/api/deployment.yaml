@@ -3,10 +3,12 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: api
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
   template:
     metadata:
       labels:
@@ -14,9 +16,8 @@ spec:
     spec:
       containers:
         - name: api
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
-          command: [ gunicorn, api.wsgi ]
-          args: [ -c, gunicorn/config.py ]
+          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 -}}
+          command: [ gunicorn, api.wsgi, -c, gunicorn/config.py ]
           ports:
             - name: api-port
               containerPort: 8000

@@ -43,7 +43,7 @@ data:
         types_hash_max_size 512;
 
         server {
-            server_name {{ template "web_domain" . }};
+            server_name {{ include "web_domain" . }};
             listen 80;
 
             location / {
@@ -57,7 +57,7 @@ data:
         }
 
         server {
-            server_name {{ template "api_domain" . }};
+            server_name {{ include "api_domain" . }};
             listen 80;
 
             gzip_static on;

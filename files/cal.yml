@@ -1,0 +1,15 @@
+image: calcom/cal.com:v3.1.5
+env:
+  - name: DATABASE_URL
+    value: postgresql://pg:$(POSTGRES_PASSWORD)@cal-postgres:5432/db
+  - name: NEXT_AUTH_URL
+    value: {{ .NEXT_AUTH_URL }}
+  - name: NEXT_PUBLIC_WEBAPP_URL
+    value: {{ .NEXT_PUBLIC_WEBAPP_URL }}
+envFrom:
+  - secretRef:
+      name: cal-postgres-secrets
+  - configMapRef:
+      name: cal-postgres-envs
+  - configMapRef:
+      name: cal-envs

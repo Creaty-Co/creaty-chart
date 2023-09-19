@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: cal-postgres-statefulset
+spec:
+  replicas: 1
+  serviceName: cal-postgres
+  selector:
+    matchLabels:
+      app: cal-postgres
+  template:
+    metadata:
+      labels:
+        app: cal-postgres
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      securityContext:
+        fsGroup: 999
+      containers:
+        - name: cal-postgres
+          image: postgres:15.3
+          args: [ -c, config_file=/etc/postgresql/postgresql.conf ]
+          envFrom:
+            - secretRef:
+                name: cal-postgres-secrets
+            - configMapRef:
+                name: cal-postgres-envs
+          ports:
+            - name: cal-postgres-port
+              containerPort: 5432
+          volumeMounts:
+            - name: data-volume
+              mountPath: /var/lib/postgresql/data/
+            - name: configs
+              mountPath: /etc/postgresql/
+            - name: tls
+              mountPath: /tls/
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: cal-postgres-pvc
+        - name: configs
+          configMap:
+            name: cal-postgres-configs
+            defaultMode: 0400
+            items:
+              - key: postgresql.conf
+                path: postgresql.conf
+        - name: tls
+          secret:
+            secretName: tls-secret
+            defaultMode: 0400

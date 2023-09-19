@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: api-ingress
+  name: cal-web-ingress
   annotations:
     nginx.ingress.kubernetes.io/configuration-snippet: |
       gzip on;
@@ -16,23 +16,13 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: {{ include "api_domain" . }}
+    - host: {{ include "cal_domain" . }}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: api
-                port:
-                  number: 80
-    - host: {{ include "api_domain" . }}
-      http:
-        paths:
-          - path: /ws
-            pathType: Prefix
-            backend:
-              service:
-                name: api-ws
+                name: cal-web
                 port:
                   number: 80
