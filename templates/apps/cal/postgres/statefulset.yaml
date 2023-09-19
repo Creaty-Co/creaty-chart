@@ -27,7 +27,7 @@ spec:
             - configMapRef:
                 name: cal-postgres-envs
           ports:
-            - name: cal-postgres-port
+            - name: cal-pg-port
               containerPort: 5432
           volumeMounts:
             - name: data-volume

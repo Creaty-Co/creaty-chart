@@ -6,7 +6,7 @@ spec:
   type: NodePort
   ports:
     - port: 5432
-      targetPort: cal-postgres-port
+      targetPort: cal-pg-port
       nodePort: 30001
   selector:
     app: cal-postgres
