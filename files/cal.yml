@@ -9,6 +9,8 @@ env:
 envFrom:
   - secretRef:
       name: cal-postgres-secrets
+  - secretRef:
+      name: cal-secrets
   - configMapRef:
       name: cal-postgres-envs
   - configMapRef:
