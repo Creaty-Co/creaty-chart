@@ -7,12 +7,12 @@ spec:
   selector:
     matchLabels:
       app: cal-web
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
   template:
     metadata:
       labels:
         app: cal-web
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: cal-web

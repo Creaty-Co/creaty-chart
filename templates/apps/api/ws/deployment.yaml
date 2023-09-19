@@ -7,12 +7,12 @@ spec:
   selector:
     matchLabels:
       app: api-ws
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
   template:
     metadata:
       labels:
         app: api-ws
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: api-ws

@@ -7,12 +7,12 @@ spec:
   selector:
     matchLabels:
       app: cbeat
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
   template:
     metadata:
       labels:
         app: cbeat
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       containers:
         - name: cbeat
