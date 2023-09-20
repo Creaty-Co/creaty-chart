@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: cal-api-deployment
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: cal-api
