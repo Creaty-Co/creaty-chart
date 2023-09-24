@@ -1,14 +1,66 @@
+global:
+  nodePorts:
+    postgres: 31000
+
 redis:
   image: redis:7.2.1
-  maxmemory: 1gb
-  maxmemory_policy: allkeys-lru
+  replicas: 1
   ports:
     main: 6379
+  maxmemory: 1gb
   configs:
-    - name: redis.conf
-      path: /usr/local/etc/redis/
+    /usr/local/etc/redis/redis.conf:
       value: |
         maxmemory {{ .Values.redis.maxmemory }}
-        maxmemory-policy {{ .Values.redis.maxmemory_policy }}
+        maxmemory-policy allkeys-lru
         appendonly yes
         appendfsync always
+
+postgres:
+  image: postgres:15.3
+  replicas: 1
+  ports:
+    main: 5432
+  envs:
+    POSTGRES_DB: db
+    POSTGRES_USER: pg
+  configs:
+    /etc/postgresql/postgresql.conf:
+      value: |
+        listen_addresses = '*'
+        max_connections = 100
+        ssl = on
+        ssl_cert_file = '/tls/tls.crt'
+        ssl_key_file = '/tls/tls.key'
+        shared_buffers = 1GB
+        temp_buffers = 32MB
+        work_mem = 32MB
+        maintenance_work_mem = 512MB
+        max_stack_depth = 2MB
+        dynamic_shared_memory_type = posix
+        wal_level = minimal
+        fsync = on
+        synchronous_commit = off
+        full_page_writes = off
+        checkpoint_timeout = 20min
+        max_wal_size = 512MB
+        min_wal_size = 80MB
+        max_wal_senders = 0
+        seq_page_cost = 0.1
+        random_page_cost = 0.1
+        cpu_tuple_cost = 0.05
+        cpu_index_tuple_cost = 0.05
+        cpu_operator_cost = 0.01
+        min_parallel_table_scan_size = 1MB
+        min_parallel_index_scan_size = 256kB
+        effective_cache_size = 1GB
+        default_statistics_target = 150
+        log_timezone = 'Etc/UTC'
+        track_io_timing = on
+        datestyle = 'iso, mdy'
+        timezone = 'Etc/UTC'
+        lc_messages = 'en_US.utf8'
+        lc_monetary = 'en_US.utf8'
+        lc_numeric = 'en_US.utf8'
+        lc_time = 'en_US.utf8'
+        default_text_search_config = 'pg_catalog.english'

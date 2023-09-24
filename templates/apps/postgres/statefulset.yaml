@@ -3,7 +3,7 @@ kind: StatefulSet
 metadata:
   name: postgres-statefulset
 spec:
-  replicas: 1
+  replicas: {{ .Values.postgres.replicas }}
   serviceName: postgres
   selector:
     matchLabels:
@@ -17,37 +17,44 @@ spec:
     spec:
       securityContext:
         fsGroup: 999
-      containers:
-        - name: postgres
-          image: postgres:15.3
-          args: [ -c, config_file=/etc/postgresql/postgresql.conf ]
-          envFrom:
-            - secretRef:
-                name: postgres-secrets
-            - configMapRef:
-                name: postgres-envs
-          ports:
-            - name: postgres-port
-              containerPort: 5432
-          volumeMounts:
-            - name: data-volume
-              mountPath: /var/lib/postgresql/data/
-            - name: configs
-              mountPath: /etc/postgresql/
-            - name: tls
-              mountPath: /tls/
       volumes:
-        - name: data-volume
-          persistentVolumeClaim:
-            claimName: postgres-pvc
         - name: configs
           configMap:
             name: postgres-configs
             defaultMode: 0400
-            items:
-              - key: postgresql.conf
-                path: postgresql.conf
         - name: tls
           secret:
             secretName: tls-secret
             defaultMode: 0400
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+      containers:
+        - name: postgres
+          image: {{ .Values.postgres.image }}
+          args: [ -c, config_file=/etc/postgresql/postgresql.conf ]
+          env:
+            {{- range $name, $value := .Values.postgres.envs }}
+            - name: {{ $name }}
+              value: {{ $value }}
+            {{- end }}
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          envFrom:
+            - secretRef:
+                name: postgres-secrets
+          ports:
+            {{- range $name, $port := .Values.postgres.ports }}
+            - name: {{ $name }}
+              containerPort: {{ $port }}
+            {{- end }}
+          volumeMounts:
+            {{- range $path := .Values.postgres.configs | keys }}
+            - name: configs
+              mountPath: {{ $path }}
+              subPath: {{ $path }}
+            {{- end }}
+            - name: tls
+              mountPath: /tls/
+            - name: data-volume
+              mountPath: /var/lib/postgresql/data/

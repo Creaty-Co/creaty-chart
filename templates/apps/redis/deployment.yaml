@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: redis-deployment
 spec:
-  replicas: 1
+  replicas: {{ .Values.redis.replicas }}
   selector:
     matchLabels:
       app: redis
@@ -14,6 +14,10 @@ spec:
       annotations:
         helm.sh/revision: "{{ .Release.Revision }}"
     spec:
+      volumes:
+        - name: configs
+          configMap:
+            name: redis-configs
       containers:
         - name: redis
           image: {{ .Values.redis.image }}
@@ -23,12 +27,8 @@ spec:
               containerPort: {{ $port }}
             {{- end }}
           volumeMounts:
-            {{- range $config := .Values.redis.configs }}
+            {{- range $path := .Values.redis.configs | keys }}
             - name: configs
-              mountPath: {{ $config.path }}
-              subPath: {{ $config.name }}
+              mountPath: {{ $path }}
+              subPath: {{ $path }}
             {{- end }}
-      volumes:
-        - name: configs
-          configMap:
-            name: redis-configs

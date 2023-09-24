@@ -5,8 +5,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 5432
-      targetPort: postgres-port
-      nodePort: 30000
+    - port: {{ .Values.postgres.ports.main }}
+      nodePort: {{ .Values.global.nodePorts.postgres }}
   selector:
     app: postgres
