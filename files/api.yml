@@ -1,7 +1,11 @@
 image: ghcr.io/creaty-co/creaty-api/api:latest
 env:
+  {{- range $name, $value := .Values.postgres.envs }}
+  - name: {{ $name }}
+    value: {{ $value }}
+  {{- end }}
   - name: DATABASE_URL
-    value: psql://pg:$(POSTGRES_PASSWORD)@postgres:5432/db
+    value: psql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgres:5432/$(POSTGRES_DB)
   - name: EMAIL_URL
     value: smtp+ssl://$(EMAIL_HOST_USER):$(EMAIL_HOST_PASSWORD)@$(EMAIL_HOST):$(EMAIL_PORT)
 envFrom:
@@ -9,7 +13,5 @@ envFrom:
       name: postgres-secrets
   - secretRef:
       name: api-secrets
-  - configMapRef:
-      name: postgres-envs
   - configMapRef:
       name: api-envs
