@@ -1,3 +1,14 @@
 redis:
+  image: redis:7.2.1
   maxmemory: 1gb
   maxmemory_policy: allkeys-lru
+  ports:
+    main: 6379
+  configs:
+    - name: redis.conf
+      path: /usr/local/etc/redis/
+      value: |
+        maxmemory {{ .Values.redis.maxmemory }}
+        maxmemory-policy {{ .Values.redis.maxmemory_policy }}
+        appendonly yes
+        appendfsync always

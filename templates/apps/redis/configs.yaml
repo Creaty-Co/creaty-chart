@@ -3,8 +3,7 @@ kind: ConfigMap
 metadata:
   name: redis-configs
 data:
-  redis.conf: |-
-    maxmemory {{ .Values.redis.maxmemory }}
-    maxmemory-policy {{ .Values.redis.maxmemory_policy }}
-    appendonly yes
-    appendfsync always
+{{- range $config := .Values.redis.configs }}
+  {{ $config.name }}: |
+    {{- (tpl ($config.value | toString) $) | nindent 4 }}
+{{- end }}

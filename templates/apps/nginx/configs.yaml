@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: nginx-configs
 data:
+  # language=nginx configuration
   nginx.conf: |
     user  nginx;
     worker_processes  auto;

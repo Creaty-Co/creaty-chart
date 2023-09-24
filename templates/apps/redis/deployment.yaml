@@ -16,17 +16,19 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:7.2.1
+          image: {{ .Values.redis.image }}
           ports:
-            - name: redis-port
-              containerPort: 6379
+            {{- range $name, $port := .Values.redis.ports }}
+            - name: {{ $name }}
+              containerPort: {{ $port }}
+            {{- end }}
           volumeMounts:
+            {{- range $config := .Values.redis.configs }}
             - name: configs
-              mountPath: /usr/local/etc/redis/
+              mountPath: {{ $config.path }}
+              subPath: {{ $config.name }}
+            {{- end }}
       volumes:
         - name: configs
           configMap:
             name: redis-configs
-            items:
-              - key: redis.conf
-                path: redis.conf
