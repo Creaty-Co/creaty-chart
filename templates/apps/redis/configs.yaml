@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: redis-configs
 data:
-{{- range $path, $config := .Values.redis.configs }}
-  {{ $path }}: |
+{{- range $name, $config := .Values.redis.configs }}
+  {{ $name }}: |
     {{- tpl $config.value $ | nindent 4 }}
 {{- end }}

@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: postgres-configs
 data:
-{{- range $path, $config := .Values.postgres.configs }}
-  {{ $path }}: |
+{{- range $name, $config := .Values.postgres.configs }}
+  {{ $name }}: |
     {{- tpl $config.value $ | nindent 4 }}
 {{- end }}

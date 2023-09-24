@@ -27,8 +27,8 @@ spec:
               containerPort: {{ $port }}
             {{- end }}
           volumeMounts:
-            {{- range $path := .Values.redis.configs | keys }}
+            {{- range $name, $config := .Values.redis.configs }}
             - name: configs
-              mountPath: {{ $path }}
-              subPath: {{ $path }}
+              mountPath: {{ $config.path }}
+              subPath: {{ $name }}
             {{- end }}

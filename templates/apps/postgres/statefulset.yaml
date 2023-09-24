@@ -49,10 +49,10 @@ spec:
               containerPort: {{ $port }}
             {{- end }}
           volumeMounts:
-            {{- range $path := .Values.postgres.configs | keys }}
+            {{- range $name, $config := .Values.postgres.configs }}
             - name: configs
-              mountPath: {{ $path }}
-              subPath: {{ $path }}
+              mountPath: {{ $config.path }}
+              subPath: {{ $name }}
             {{- end }}
             - name: tls
               mountPath: /tls/

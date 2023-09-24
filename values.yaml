@@ -9,7 +9,8 @@ redis:
     main: 6379
   maxmemory: 1gb
   configs:
-    /usr/local/etc/redis/redis.conf:
+    main:
+      path: /usr/local/etc/redis/redis.conf
       value: |
         maxmemory {{ .Values.redis.maxmemory }}
         maxmemory-policy allkeys-lru
@@ -25,7 +26,8 @@ postgres:
     POSTGRES_DB: db
     POSTGRES_USER: pg
   configs:
-    /etc/postgresql/postgresql.conf:
+    main:
+      path: /etc/postgresql/postgresql.conf
       value: |
         listen_addresses = '*'
         max_connections = 100
