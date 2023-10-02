@@ -16,9 +16,9 @@ redis:
     maxmemory: 30mb
   resources:
     requests:
-      memory: 40mb
+      memory: 40Mi
     limits:
-      memory: 60mb
+      memory: 60Mi
 
 postgres:
   nodePorts:
