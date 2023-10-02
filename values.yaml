@@ -130,17 +130,17 @@ redis:
   ports:
     main: 6379
   vars:
-    maxmemory: 60mb
+    maxmemory: 60Mi
   configs:
     main:
       path: /usr/local/etc/redis/redis.conf
       value: '{{- tpl (.Files.Get "configs/redis/redis.conf") . }}'
   resources:
     requests:
-      memory: 70mb
+      memory: 70Mi
       cpu: 50m
     limits:
-      memory: 90mb
+      memory: 90Mi
       cpu: 100m
 
 postgres:
@@ -160,10 +160,10 @@ postgres:
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
   resources:
     requests:
-      memory: 500mb
+      memory: 500Mi
       cpu: 300m
     limits:
-      memory: 600mb
+      memory: 600Mi
       cpu: 500m
 
 cal:
@@ -192,10 +192,10 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
     resources:
       requests:
-        memory: 350mb
+        memory: 350Mi
         cpu: 100m
       limits:
-        memory: 600mb
+        memory: 600Mi
         cpu: 250m
   web:
     envs:
@@ -203,10 +203,10 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
     resources:
       requests:
-        memory: 350mb
+        memory: 350Mi
         cpu: 300m
       limits:
-        memory: 600mb
+        memory: 600Mi
         cpu: 400m
 
 cal_postgres:
@@ -226,8 +226,8 @@ cal_postgres:
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
   resources:
     requests:
-      memory: 500mb
+      memory: 500Mi
       cpu: 300m
     limits:
-      memory: 600mb
+      memory: 600Mi
       cpu: 500m
