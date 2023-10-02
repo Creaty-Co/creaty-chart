@@ -45,7 +45,11 @@
     secretKeyRef:
       name: {{ $value.secret }}
       key: {{ default $name $value.key }}
-  {{- else }}
+  {{- end }}
+{{- end }}
+{{- range $name, $value := ._envs }}
+- name: {{ $name }}
+  {{- if not (and (kindIs "map" $value) (hasKey $value "secret")) }}
   value: {{ quote (tpl $value $._) }}
   {{- end }}
 {{- end }}

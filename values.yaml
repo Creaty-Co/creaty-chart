@@ -61,10 +61,10 @@ api:
       secret: api-secrets
     SENTRY_ENVIRONMENT: dev  # FIXME: {{ .Release.Name }}
     SENTRY_RELEASE: ""  # TODO
-    APOSTGRES_PASSWORD:
+    POSTGRES_PASSWORD:
       secret: postgres-secrets
       key: POSTGRES_PASSWORD
-    DATABASE_URL: psql://{{ .Values.postgres.envs.POSTGRES_USER }}:$(APOSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/{{ .Values.postgres.envs.POSTGRES_DB }}
+    DATABASE_URL: psql://{{ .Values.postgres.envs.POSTGRES_USER }}:$(POSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/{{ .Values.postgres.envs.POSTGRES_DB }}
     REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
     GOOGLE_APP_ID: 806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
     GOOGLE_APP_SECRET:
