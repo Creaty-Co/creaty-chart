@@ -1,6 +1,4 @@
 global:
-  nodePorts:
-    postgres: 31001
   secrets:
     Opaque:
       api-secrets:
@@ -14,4 +12,18 @@ global:
         POSTGRES_PASSWORD: AgC8YcYoVbzZWmfeih21nb3qPT1d/HWzzmgGPvW6t1XSb59pcc0/dxnravcyDWsb/t/0rtHlaS65O9YWEagQHBhBo1Wr5K0VAskWRaqKIgX+vUcFgjOOfoXDHWEfDBVqZMfsac3oHPS6AyQd5kNQiafcVHl5t/tr/0CxtcFq3paBDKGl8lY5Tica8Wa9bS4sL5kid5/Q1Ekls52QnQiKaMnOfW+fa9ZZrjj6oEzzuPfYg6nOzBKSnlfQt0seaO2Fewf0AaJf/qi4eqShMz2Z1cENdcxpMt47C+VFINUN0NkpYfxw+d/4ixW3Ol0TP1BYk0Rrv2mHlZOtce0VTOQdd5YrxPt1oa5rG454lEA58JjDuG0QwZ8zCnFa0OSIYrj6dLsmRI3bptsbhXGTn0MvJNw7Bf8bqpSTtRW41OgfBM3tjV4FZrel2IUrflp19lR2oAv4TaK9lGXqpyt4FXtW9rBhvVc2g7HgJggJ2wv1iWGeJphNmmfitiv8k/Oa7S22JgYUYUpTY4Fy+9ynYenwDYN/zrI0tLdwOVJNuquvQHoLy349iUg9+ZcREjacK8/vjl6V+UqRUMuyW6NXk2KtFFobiVZcJso0hilFvOMpkx1brxoWySqX7srXswKCIrpPDL6i/nMxH6zgf/p2H5xq2FT0iDrAE9ygybLuTls+zaP1vKuuj5B8ndrIS5tXZYF69nwvYWaHCK4FUw==
 
 redis:
-  maxmemory: 512mb
+  vars:
+    maxmemory: 30mb
+  resources:
+    requests:
+      memory: 40mb
+    limits:
+      memory: 60mb
+
+postgres:
+  nodePorts:
+    main: '{{ .Values.global.nodePorts.envy.postgres.main }}'
+
+cal_postgres:
+  nodePorts:
+    main: '{{ .Values.global.nodePorts.envy.cal_postgres.main }}'

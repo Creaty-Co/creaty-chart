@@ -21,3 +21,39 @@
         {{- printf "%s-cal.creaty.club" .Release.Name }}
     {{- end }}
 {{- end }}
+
+{{- define "configmap" }}
+{{- range $name, $config := ._configs }}
+  {{ $name }}: |
+    {{- (tpl $config.value $._) | trim | nindent 4 }}
+{{- end }}
+{{- end }}
+
+{{- define "configs" }}
+{{- range $name, $config := . }}
+- name: configs
+  mountPath: {{ $config.path }}
+  subPath: {{ $name }}
+{{- end }}
+{{- end -}}
+
+{{- define "env" }}
+{{- range $name, $value := ._envs }}
+- name: {{ $name }}
+  {{- if and (kindIs "map" $value) (hasKey $value "secret") }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ $value.secret }}
+      key: {{ default $name $value.key }}
+  {{- else }}
+  value: {{ quote (tpl $value $._) }}
+  {{- end }}
+{{- end }}
+{{- end -}}
+
+{{- define "ports" }}
+{{- range $name, $port := . }}
+- name: {{ $name }}
+  containerPort: {{ $port }}
+{{- end }}
+{{- end }}

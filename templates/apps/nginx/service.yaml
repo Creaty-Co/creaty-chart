@@ -7,3 +7,4 @@ spec:
     app: nginx
   ports:
     - port: 80
+      targetPort: {{ .Values.nginx.ports.main }}

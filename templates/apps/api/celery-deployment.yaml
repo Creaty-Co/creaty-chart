@@ -16,5 +16,7 @@ spec:
     spec:
       containers:
         - name: celery
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          image: {{ .Values.api.image }}
           command: [ celery, -A, api, worker, -c, "2", -P, gevent, -l, info ]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          resources: {{- toYaml .Values.api.celery.resources | nindent 12 }}

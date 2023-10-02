@@ -2,8 +2,4 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-configs
-data:
-{{- range $name, $config := .Values.redis.configs }}
-  {{ $name }}: |
-    {{- tpl $config.value $ | nindent 4 }}
-{{- end }}
+data: {{- include "configmap" (dict "_" $ "_configs" .Values.redis.configs) }}

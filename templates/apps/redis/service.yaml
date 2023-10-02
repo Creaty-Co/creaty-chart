@@ -3,8 +3,7 @@ kind: Service
 metadata:
   name: redis
 spec:
-  type: ClusterIP
-  ports:
-    - port: {{ .Values.redis.ports.main }}
   selector:
     app: redis
+  ports:
+    - port: {{ .Values.redis.ports.main }}

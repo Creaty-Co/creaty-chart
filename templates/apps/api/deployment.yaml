@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: api-deployment
 spec:
-  replicas: 1
+  replicas: {{ .Values.api.replicas }}
   selector:
     matchLabels:
       app: api
@@ -16,11 +16,8 @@ spec:
     spec:
       containers:
         - name: api
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 -}}
+          image: {{ .Values.api.image }}
           command: [ gunicorn, api.wsgi, -c, gunicorn/config.py ]
-          ports:
-            - name: api-port
-              containerPort: 8000
-          resources:
-            limits:
-              memory: 250Mi
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          ports: {{- include "ports" .Values.api.ports | indent 12 }}
+          resources: {{- toYaml .Values.api.resources | nindent 12 }}

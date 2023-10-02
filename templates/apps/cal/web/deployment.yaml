@@ -16,10 +16,7 @@ spec:
     spec:
       containers:
         - name: cal-web
-          {{- tpl (.Files.Get "files/cal.yml") (merge . (dict
-            "NEXT_AUTH_URL" (tpl "https://{{ include \"cal_domain\" . }}/api/auth" .)
-            "NEXT_PUBLIC_WEBAPP_URL" (tpl "https://{{ include \"cal_domain\" . }}" .)
-          )) | nindent 10 -}}
-          ports:
-            - name: cal-web-port
-              containerPort: 3000
+          image: {{ .Values.cal.image }}
+          env: {{- include "env" (dict "_" $ "_envs" (merge .Values.cal.envs .Values.cal.web.envs)) | indent 12 }}
+          ports: {{- include "ports" .Values.cal.ports | indent 12 }}
+          resources: {{- toYaml .Values.cal.web.resources | nindent 12 }}

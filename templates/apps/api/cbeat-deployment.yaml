@@ -16,5 +16,7 @@ spec:
     spec:
       containers:
         - name: cbeat
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          image: {{ .Values.api.image }}
           command: [ celery, -A, api, beat, -S, django, -l, info ]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          resources: {{- toYaml .Values.api.cbeat.resources | nindent 12 }}

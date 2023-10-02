@@ -21,14 +21,6 @@ spec:
       containers:
         - name: redis
           image: {{ .Values.redis.image }}
-          ports:
-            {{- range $name, $port := .Values.redis.ports }}
-            - name: {{ $name }}
-              containerPort: {{ $port }}
-            {{- end }}
-          volumeMounts:
-            {{- range $name, $config := .Values.redis.configs }}
-            - name: configs
-              mountPath: {{ $config.path }}
-              subPath: {{ $name }}
-            {{- end }}
+          ports: {{- include "ports" .Values.redis.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.redis.configs | indent 12 }}
+          resources: {{- toYaml .Values.redis.resources | nindent 12 }}

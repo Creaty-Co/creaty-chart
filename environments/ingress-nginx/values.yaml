@@ -1,5 +1,5 @@
 controller:
-  replicaCount: 2
+  replicaCount: 1
   service:
     annotations:
       nginx.ingress.kubernetes.io/enable-http2: "true"
@@ -10,3 +10,10 @@ controller:
       service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
     targetPorts:
       https: http
+  resources:
+    requests:
+      cpu: 150m
+      memory: 90Mi
+    limits:
+      cpu: 200m
+      memory: 110Mi

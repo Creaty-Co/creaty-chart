@@ -4,8 +4,10 @@ metadata:
   name: postgres
 spec:
   type: NodePort
-  ports:
-    - port: {{ .Values.postgres.ports.main }}
-      nodePort: {{ .Values.global.nodePorts.postgres }}
   selector:
     app: postgres
+  ports:
+    - port: {{ .Values.postgres.ports.main }}
+      {{- if and .Values.postgres.nodePorts .Values.postgres.nodePorts.main }}
+      nodePort: {{ tpl .Values.postgres.nodePorts.main . }}
+      {{- end }}

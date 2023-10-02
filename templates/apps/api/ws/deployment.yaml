@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: api-ws
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          image: {{ .Values.api.image }}
           command: [ daphne, -b, 0.0.0.0, api.asgi:application ]
-          ports:
-            - name: api-ws-port
-              containerPort: 8000
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          ports: {{- include "ports" .Values.api.ws.ports | indent 12 }}
+          resources: {{- toYaml .Values.api.ws.resources | nindent 12 }}

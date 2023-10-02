@@ -6,6 +6,5 @@ spec:
   selector:
     app: cal-api
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: cal-api-port
+    - port: 80
+      targetPort: {{ .Values.cal.ports.main }}

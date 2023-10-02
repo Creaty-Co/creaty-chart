@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 1
+  replicas: {{ .Values.nginx.replicas }}
   selector:
     matchLabels:
       app: nginx
@@ -24,26 +24,23 @@ spec:
           emptyDir: {}
       initContainers:
         - name: init-web
-          image: ghcr.io/creaty-co/creaty-web/web:latest
+          image: {{ .Values.nginx.init.web.image }}
           command: [ bash, -c, mv /web/* /web-dir ]
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
         - name: init-api
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 -}}
+          image: {{ .Values.api.image }}
           command: [ python, manage.py, collectstatic, --noinput ]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           volumeMounts:
             - name: api-static-dir
               mountPath: /api/static/
       containers:
         - name: nginx
-          image: nginx:1.25.2
-          ports:
-            - containerPort: 80
-          volumeMounts:
-            - name: configs
-              mountPath: /etc/nginx/nginx.conf
-              subPath: nginx.conf
+          image: {{ .Values.nginx.image }}
+          ports: {{- include "ports" .Values.nginx.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.nginx.configs | indent 12 }}
             - name: web-dir
               mountPath: /etc/nginx/html/web/
             - name: api-static-dir

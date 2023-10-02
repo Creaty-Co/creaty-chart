@@ -9,6 +9,7 @@ spec:
     spec:
       containers:
         - name: migrate
+          image: {{ .Values.api.image }}
           command: [ python, manage.py, migrate ]
-          {{- tpl (.Files.Get "files/api.yml") . | nindent 10 }}
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
       restartPolicy: Never

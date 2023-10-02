@@ -6,6 +6,5 @@ spec:
   selector:
     app: api-ws
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: api-ws-port
+    - port: 80
+      targetPort: {{ .Values.api.ws.ports.main }}
