@@ -5,6 +5,7 @@ global:
         main: 31001
       cal_postgres:
         main: 31002
+  secrets:
     Opaque:
       api-secrets:
         # SECRET_KEY:
