@@ -174,7 +174,7 @@ cal:
   envs:
     LICENSE: agree
     NEXT_PUBLIC_LICENSE_CONSENT: agree
-    NEXT_AUTH_SECRET:
+    NEXTAUTH_SECRET:
       secret: cal-secrets
     CALENDSO_ENCRYPTION_KEY:
       secret: cal-secrets
