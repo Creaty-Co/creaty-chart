@@ -81,8 +81,10 @@ api:
   resources:
     requests:
       memory: 150Mi
+      cpu: null
     limits:
       memory: 250Mi
+      cpu: null
   ws:
     replicas: 1
     ports:
@@ -90,20 +92,26 @@ api:
     resources:
       requests:
         memory: 100Mi
+        cpu: null
       limits:
         memory: 130Mi
+        cpu: null
   celery:
     resources:
       requests:
         memory: 120Mi
+        cpu: null
       limits:
         memory: 150Mi
+        cpu: null
   cbeat:
     resources:
       requests:
         memory: 100Mi
+        cpu: null
       limits:
         memory: 130Mi
+        cpu: null
 
 nginx:
   init:
@@ -132,8 +140,10 @@ redis:
   resources:
     requests:
       memory: 70Mi
+      cpu: null
     limits:
       memory: 90Mi
+      cpu: null
 
 postgres:
   image: postgres:15.3
@@ -153,6 +163,10 @@ postgres:
   resources:
     requests:
       memory: 500Mi
+      cpu: null
+    limits:
+      memory: null
+      cpu: null
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -181,6 +195,10 @@ cal:
     resources:
       requests:
         memory: 350Mi
+        cpu: null
+      limits:
+        memory: null
+        cpu: null
   web:
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
@@ -188,6 +206,10 @@ cal:
     resources:
       requests:
         memory: 350Mi
+        cpu: null
+      limits:
+        memory: null
+        cpu: null
 
 cal_postgres:
   image: postgres:15.3
@@ -207,3 +229,7 @@ cal_postgres:
   resources:
     requests:
       memory: 500Mi
+      cpu: null
+    limits:
+      memory: null
+      cpu: null
