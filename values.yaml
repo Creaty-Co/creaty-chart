@@ -90,10 +90,8 @@ api:
     resources:
       requests:
         memory: 100Mi
-        cpu: null
       limits:
         memory: 130Mi
-        cpu: null
   celery:
     resources:
       requests:
