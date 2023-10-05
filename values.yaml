@@ -163,10 +163,7 @@ postgres:
   resources:
     requests:
       memory: 500Mi
-      cpu: null
-    limits:
-      memory: null
-      cpu: null
+    limits: {}
 
 cal:
   image: calcom/cal.com:v3.1.5
