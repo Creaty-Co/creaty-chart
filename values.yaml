@@ -204,6 +204,6 @@ cal_postgres:
     main:
       path: /etc/postgresql/postgresql.conf
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-    resources:
-      requests:
-        memory: 50Mi
+  resources:
+    requests:
+      memory: 50Mi
