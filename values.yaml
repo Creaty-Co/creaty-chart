@@ -154,7 +154,7 @@ postgres:
     requests:
       memory: 500Mi
     limits:
-      memory: 600Mi
+      memory: 800Mi
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -184,7 +184,7 @@ cal:
       requests:
         memory: 350Mi
       limits:
-        memory: 600Mi
+        memory: 700Mi
   web:
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
@@ -193,7 +193,7 @@ cal:
       requests:
         memory: 350Mi
       limits:
-        memory: 600Mi
+        memory: 700Mi
 
 cal_postgres:
   image: postgres:15.3
@@ -214,4 +214,4 @@ cal_postgres:
     requests:
       memory: 500Mi
     limits:
-      memory: 600Mi
+      memory: 800Mi
