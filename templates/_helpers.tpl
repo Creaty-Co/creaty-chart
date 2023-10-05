@@ -48,8 +48,8 @@
   {{- end }}
 {{- end }}
 {{- range $name, $value := ._envs }}
-- name: {{ $name }}
   {{- if not (and (kindIs "map" $value) (hasKey $value "secret")) }}
+- name: {{ $name }}
   value: {{ quote (tpl $value $._) }}
   {{- end }}
 {{- end }}
