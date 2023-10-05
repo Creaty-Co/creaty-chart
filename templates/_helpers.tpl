@@ -39,8 +39,8 @@
 
 {{- define "env" }}
 {{- range $name, $value := ._envs }}
-- name: {{ $name }}
   {{- if and (kindIs "map" $value) (hasKey $value "secret") }}
+- name: {{ $name }}
   valueFrom:
     secretKeyRef:
       name: {{ $value.secret }}
