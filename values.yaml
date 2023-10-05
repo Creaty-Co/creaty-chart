@@ -180,14 +180,14 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
     resources:
       requests:
-        memory: 350Mi
+        memory: 200Mi
   web:
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
     resources:
       requests:
-        memory: 350Mi
+        memory: 200Mi
 
 cal_postgres:
   image: postgres:15.3
