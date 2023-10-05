@@ -78,32 +78,16 @@ api:
     FIXER_ACCESS_KEY:
       secret: api-secrets
     GUNICORN_WORKERS: "2"
-  resources:
-    requests:
-      memory: 150Mi
-    limits:
-      memory: 250Mi
+  resources: {}
   ws:
     replicas: 1
     ports:
       main: 8000
-    resources:
-      requests:
-        memory: 100Mi
-      limits:
-        memory: 130Mi
+    resources: {}
   celery:
-    resources:
-      requests:
-        memory: 120Mi
-      limits:
-        memory: 150Mi
+    resources: {}
   cbeat:
-    resources:
-      requests:
-        memory: 100Mi
-      limits:
-        memory: 130Mi
+    resources: {}
 
 nginx:
   init:
@@ -129,11 +113,7 @@ redis:
     main:
       path: /usr/local/etc/redis/redis.conf
       value: '{{- tpl (.Files.Get "configs/redis/redis.conf") . }}'
-  resources:
-    requests:
-      memory: 70Mi
-    limits:
-      memory: 90Mi
+  resources: {}
 
 postgres:
   image: postgres:15.3
@@ -150,9 +130,7 @@ postgres:
     main:
       path: /etc/postgresql/postgresql.conf
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources:
-    requests:
-      memory: 50Mi
+  resources: {}
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -178,16 +156,12 @@ cal:
     envs:
       NEXT_AUTH_URL: http://cal-api
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
-    resources:
-      requests:
-        memory: 200Mi
+    resources: {}
   web:
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
-    resources:
-      requests:
-        memory: 200Mi
+    resources: {}
 
 cal_postgres:
   image: postgres:15.3
@@ -204,6 +178,4 @@ cal_postgres:
     main:
       path: /etc/postgresql/postgresql.conf
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources:
-    requests:
-      memory: 50Mi
+  resources: {}
