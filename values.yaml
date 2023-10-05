@@ -154,7 +154,7 @@ postgres:
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
   resources:
     requests:
-      memory: 500Mi
+      memory: 50Mi
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -206,6 +206,6 @@ cal_postgres:
     main:
       path: /etc/postgresql/postgresql.conf
       value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources:
-    requests:
-      memory: 500Mi
+    resources:
+      requests:
+        memory: 50Mi
