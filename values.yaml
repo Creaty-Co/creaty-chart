@@ -112,6 +112,11 @@ redis:
   image: redis:7.2.1
   ports:
     main: 6379
+  probe:
+    exec:
+      command: [redis-cli, ping]
+    initialDelaySeconds: 5
+    timeoutSeconds: 3
   cache:
     replicas: 1
     vars:
@@ -152,6 +157,17 @@ redis:
 postgres:
   image: postgres:15.3
   replicas: 1
+  probes:
+    liveness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 9
+    readiness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
   ports:
     main: 5432
   envs:
@@ -200,6 +216,17 @@ cal:
 cal_postgres:
   image: postgres:15.3
   replicas: 1
+  probes:
+    liveness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.cal_postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 9
+    readiness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.cal_postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
   ports:
     main: 5432
   envs:

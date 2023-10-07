@@ -24,3 +24,5 @@ spec:
           ports: {{- include "ports" .Values.redis.ports | indent 12 }}
           volumeMounts: {{- include "configs" .Values.redis.cacheops.configs | indent 12 }}
           resources: {{- toYaml .Values.redis.cacheops.resources | nindent 12 }}
+          livenessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
+          readinessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
