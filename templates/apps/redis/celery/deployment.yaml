@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-celery-deployment
+spec:
+  replicas: {{ .Values.redis.cache.replicas }}
+  selector:
+    matchLabels:
+      app: redis-celery
+  template:
+    metadata:
+      labels:
+        app: redis-celery
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      volumes:
+        - name: configs
+          configMap:
+            name: redis-celery-configs
+      containers:
+        - name: redis-celery
+          image: {{ .Values.redis.image }}
+          ports: {{- include "ports" .Values.redis.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.redis.celery.configs | indent 12 }}
+          resources: {{- toYaml .Values.redis.celery.resources | nindent 12 }}

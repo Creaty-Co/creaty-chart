@@ -1,5 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: redis-configs
-data: {{- include "configmap" (dict "_" $ "_configs" .Values.redis.configs) }}

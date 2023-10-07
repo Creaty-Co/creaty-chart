@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-celery
+spec:
+  selector:
+    app: redis-celery
+  ports:
+    - port: {{ .Values.redis.ports.main }}

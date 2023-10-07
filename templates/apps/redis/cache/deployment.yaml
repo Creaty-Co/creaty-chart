@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache-deployment
+spec:
+  replicas: {{ .Values.redis.cache.replicas }}
+  selector:
+    matchLabels:
+      app: redis-cache
+  template:
+    metadata:
+      labels:
+        app: redis-cache
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      volumes:
+        - name: configs
+          configMap:
+            name: redis-cache-configs
+      containers:
+        - name: redis-cache
+          image: {{ .Values.redis.image }}
+          ports: {{- include "ports" .Values.redis.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.redis.cache.configs | indent 12 }}
+          resources: {{- toYaml .Values.redis.cache.resources | nindent 12 }}

@@ -15,12 +15,12 @@ global:
         GOOGLE_APP_SECRET: AgB4SFh7QR62kK+X1bSiVOAfzeSllVX5pJSaF/A9SjvqyHp/r0fTZl8uZ1dcPwuJ8mhpusKe1Va5wMyAFr+ZjvKUE9Sg3l7vH40yBZ9xUgrAlFZH3/GohN4tj+bbBM5IaCWpCqrDFFSqDTC2NI0zWjgsiJAcaJnmLZN8z5sA+49gnaT6Hj4fuKURmcG7UHfGFIDMzoEn87Aoh7zj/GBbQjYnrkuYXKovJTWk8oKNnTvI2mbMkzGqm5ANhfKHwxoBwIl2K3UiXjaHYWE2QWCJzX8l7QUkQ9rKQ5TW+Ml1VvUn2r1bNdwGH2E7L0ieTqDt6ecVEn5kfGsuAlVskNmY7GSTw3ZDzjmz+LQ4QjUUg5UND6sID6MmdrQjBP913GJ4QaoM36dAJS50EqdFX69nLHuGGRQPpe9QX5ogarw1H4ZbHt2oMHUrdq+IE2DkNP2HmcLnMEriWOdobEilKKozW5QeYf6W7EiRtywbZnXCuhVIMMUPQPmQdoMnvkMURwdoK3o7GT4tCGTujjl63DLLtrIGRIlL8fhzwRehOWzGlNxL1exiGpBnl2CErr+m/fB+Y+R7JgDg1rGauMAgEzztJHv5EnxhpymA9HKJk9yxzwWp6nxy5uk+EHCHmraLENzc/U04JXGsKYVaYesggWghb+xMUiTFcc8XIAK87g502845GN5E4HiBDEvHtAknKfx/EtYDwV67QJYomTLCHCiUfojevSqtekgOYHQssJ5rZLcy2NvaEQ==
         SENTRY_DSN: AgCQ9RogSPkfii3E+iHybZO05xGp5JcJcZ1FAYkk1QxO/DgBdLF+f1SI/wbIL+iUfKmjy7FaWgSR+LMV7bnpsGtOaxJIAmnTxJ/WD+0zAtMjohh/l3iQhj2S0k+s76cB3TMkR0kIV5L7seH1INnOVJA7juPnoT/3Ivhxbq5atp34HQxm7w6NE7r9Yn+oYNX+gBFHAyJAHpVkDHV4OqxqhKrj3BFC/HMNpbv0ufn9vJyvTR6rhosOxZKC+qUmAI7iLL18wByXc/iYA9ZTx3nFCDPndKblkNRlJnJbXrzLFgXeDlHvL1WzEaxc2oMc3hRusITnQcpmBV240m7+FomxPS2B4GyYlsvPYWGsdp+1xAAU6KB6V44r/M6Vt6p3lG3saddb1G4HWK7/SZkEESASE6c9Plx2f/U+wn6xWHhPLidBnz9pVaUOEX3SGfSkBErrs1d2/bD947h+Z9906r85hGNTFcFVtc4YRnQK30xiPAe7yO24tAHWzC1pksJCiH/W8eKBM1lAQOIDy5kdOu1vOqRNlIhK+UgjbfuuRTivj30yAGUOhAkYPlPJ92gTQNZqk6wcd7lYlLFPKw6m9TRmludgFMTwVRCaK8FrgmC9/dVxlfA+Shf2cBKAwrjA9s04UDVur+EtTpaTF8rAAOfM7TQvI5fQuW3Yq+aKANFjtLA67WzGxJaTepsNMhZ++8olcVPKnCgCTgYrmobtEDWJJVAP3u86UkAC86v/XYiXhZUmINvfSyvg1Ng8vU62GI9vGFrOhM5Py2ne/b16Ae1bodpTJwuD60b6jRj7ByZGRJPOFfVrbduqylK+2k8pSA==
     postgres-secrets:
-      # POSTGRES_PASSWORD:
+    # POSTGRES_PASSWORD:
     cal-secrets:
-      # CALENDSO_ENCRYPTION_KEY:
-      # NEXTAUTH_SECRET:
+    # CALENDSO_ENCRYPTION_KEY:
+    # NEXTAUTH_SECRET:
     cal-postgres-secrets:
-      # POSTGRES_PASSWORD:
+    # POSTGRES_PASSWORD:
     kubernetes.io/tls:
       tls-secret:
         tls.crt: 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
@@ -41,7 +41,10 @@ api:
     ANON_THROTTLE_RATE: 50/s
     USE_BROWSABLE_API: "1"
     USE_DEBUG_TOOLBAR: "0"
-    REDIS_URL: redis://redis:6379/0
+    REDIS_CACHE_URL: redis://redis-cache:6379/0
+    REDIS_CACHEOPS_URL: redis://redis-cacheops:6379/0
+    REDIS_STORAGE_URL: redis://redis-storage:6379/0
+    REDIS_CELERY_URL: redis://redis-celery:6379/0
     EMAIL_HOST: smtp.gmail.com
     EMAIL_PORT: "465"
     EMAIL_HOST_USER: hi@creaty.club
@@ -64,7 +67,9 @@ api:
     POSTGRES_PASSWORD:
       secret: postgres-secrets
       key: POSTGRES_PASSWORD
-    DATABASE_URL: psql://{{ .Values.postgres.envs.POSTGRES_USER }}:$(POSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/{{ .Values.postgres.envs.POSTGRES_DB }}
+    DATABASE_URL: "psql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
+      $(POSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/\
+      {{ .Values.postgres.envs.POSTGRES_DB }}"
     REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
     GOOGLE_APP_ID: 806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
     GOOGLE_APP_SECRET:
@@ -78,16 +83,16 @@ api:
     FIXER_ACCESS_KEY:
       secret: api-secrets
     GUNICORN_WORKERS: "2"
-  resources: {}
+  resources: { }
   ws:
     replicas: 1
     ports:
       main: 8000
-    resources: {}
+    resources: { }
   celery:
-    resources: {}
+    resources: { }
   cbeat:
-    resources: {}
+    resources: { }
 
 nginx:
   init:
@@ -100,20 +105,49 @@ nginx:
   configs:
     main:
       path: /etc/nginx/nginx.conf
-      value: '{{- tpl (.Files.Get "configs/nginx/nginx.conf") . }}'
+      value: '{{ tpl (.Files.Get "configs/nginx/nginx.conf") . }}'
+  resources: { }
 
 redis:
   image: redis:7.2.1
-  replicas: 1
   ports:
     main: 6379
-  vars:
-    maxmemory: 60Mi
-  configs:
-    main:
-      path: /usr/local/etc/redis/redis.conf
-      value: '{{- tpl (.Files.Get "configs/redis/redis.conf") . }}'
-  resources: {}
+  cache:
+    replicas: 1
+    vars:
+      maxmemory: 60Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-cache.conf") . }}'
+    resources: { }
+  cacheops:
+    replicas: 1
+    vars:
+      maxmemory: 30Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-cacheops.conf") . }}'
+    resources: { }
+  storage:
+    replicas: 1
+    vars:
+      maxmemory: 10Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-storage.conf") . }}'
+    resources: { }
+  celery:
+    replicas: 1
+    vars:
+      maxmemory: 20Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-celery.conf") . }}'
+    resources: { }
 
 postgres:
   image: postgres:15.3
@@ -129,8 +163,8 @@ postgres:
   configs:
     main:
       path: /etc/postgresql/postgresql.conf
-      value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources: {}
+      value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
+  resources: { }
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -156,12 +190,12 @@ cal:
     envs:
       NEXT_AUTH_URL: http://cal-api
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
-    resources: {}
+    resources: { }
   web:
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
-    resources: {}
+    resources: { }
 
 cal_postgres:
   image: postgres:15.3
@@ -177,5 +211,5 @@ cal_postgres:
   configs:
     main:
       path: /etc/postgresql/postgresql.conf
-      value: '{{- tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources: {}
+      value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
+  resources: { }

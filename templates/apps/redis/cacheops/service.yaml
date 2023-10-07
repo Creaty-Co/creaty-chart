@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis
+  name: redis-cacheops
 spec:
   selector:
-    app: redis
+    app: redis-cacheops
   ports:
     - port: {{ .Values.redis.ports.main }}
