@@ -8,7 +8,9 @@ spec:
       app: cal-postgres
   replicas: {{ .Values.cal_postgres.replicas }}
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: cal-postgres-data-pvc
       spec:
         accessModes:

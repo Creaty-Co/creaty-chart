@@ -8,7 +8,9 @@ spec:
     matchLabels:
       app: redis-celery
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: redis-celery-data-pvc
       spec:
         accessModes:

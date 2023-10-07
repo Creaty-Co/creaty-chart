@@ -8,7 +8,9 @@ spec:
     matchLabels:
       app: redis-storage
   volumeClaimTemplates:
-    - metadata:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
         name: redis-storage-data-pvc
       spec:
         accessModes:
