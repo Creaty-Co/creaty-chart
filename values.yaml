@@ -52,11 +52,9 @@ api:
       secret: api-secrets
     EMAIL_URL: 'smtp+ssl://{{ .Values.api.envs.EMAIL_HOST_USER }}:$(EMAIL_HOST_PASSWORD)@{{ .Values.api.envs.EMAIL_HOST }}:{{ .Values.api.envs.EMAIL_PORT }}'
     EMAIL_BACKEND: smtp
-    CELERY_BROKER_URL: redis://redis:6379/0
     CELERY_TASK_EAGER: "0"
     CELERY_REDIS_MAX_CONNECTIONS: "1000"
     CELERY_BROKER_POOL_LIMIT: "1000"
-    CELERY_RESULT_BACKEND: redis://redis:6379/0
     CLOUDINARY_URL:
       secret: api-secrets
     CLOUDINARY_PREFIX: '{{ .Release.Name }}'
@@ -83,6 +81,20 @@ api:
     FIXER_ACCESS_KEY:
       secret: api-secrets
     GUNICORN_WORKERS: "2"
+  init:
+    - name: wait-for-redis
+      image: '{{ .Values.redis.image }}'
+      env:
+        - name: REDIS_URL
+          value: '{{ .Values.api.envs.REDIS_CACHE_URL }}'
+      command: [
+        "sh", "-c",
+          "until redis-cli -h $REDIS_URL -p 6379 ping; do \
+          echo 'Waiting for Redis to be available...'; \
+          sleep 5; \
+        done"
+      ]
+      retries: 3
   resources: { }
   ws:
     replicas: 1
@@ -100,6 +112,12 @@ nginx:
       image: ghcr.io/creaty-co/creaty-web/web:latest
   image: nginx:1.25.2
   replicas: 1
+  probe:
+    httpGet:
+      path: /
+      port: main
+    initialDelaySeconds: 2
+    timeoutSeconds: 3
   ports:
     main: 80
   configs:
@@ -201,7 +219,9 @@ cal:
     EMAIL_FROM: <hi@creaty.club>Creaty.Co
     POSTGRES_PASSWORD:
       secret: cal-postgres-secrets
-    DATABASE_URL: postgresql://{{ .Values.postgres.envs.POSTGRES_USER }}:$(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.postgres.ports.main }}/{{ .Values.postgres.envs.POSTGRES_DB }}
+    DATABASE_URL: "postgresql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
+      $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.postgres.ports.main }}/\
+      {{ .Values.postgres.envs.POSTGRES_DB }}"
   api:
     envs:
       NEXT_AUTH_URL: http://cal-api

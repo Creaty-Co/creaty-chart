@@ -45,4 +45,6 @@ spec:
               mountPath: /etc/nginx/html/web/
             - name: api-static-dir
               mountPath: /etc/nginx/html/api/static/
-          resources: {{- toYaml .Values.cal_postgres.resources | nindent 12 }}
+          resources: {{- toYaml .Values.nginx.resources | nindent 12 }}
+          livenessProbe: {{- tpl (toYaml .Values.nginx.probe) . | nindent 12 }}
+          readinessProbe: {{- tpl (toYaml .Values.nginx.probe) . | nindent 12 }}
