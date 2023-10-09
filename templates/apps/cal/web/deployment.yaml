@@ -15,7 +15,7 @@ spec:
         helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       initContainers:
-        {{- include "init-wait-for-postgres" dict "postgres_host" "cal-postgres" | indent 8 }}
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "cal-postgres") | indent 8 }}
       containers:
         - name: cal-web
           image: {{ .Values.cal.image }}
