@@ -94,8 +94,8 @@
 	- -c
 	- |
 	  retries=0
-	  max_retries={{ .Values.retries | default1 }}
-	  timeout={{ .Values.timeout | default }}
+	  max_retries={{ .Values.retries | default 15 }}
+	  timeout={{ .Values.timeout | default 6 }}
 	  while [ "$retries" -lt "$max_retries" ]; do
 		echo "Attempt $retries of $max_retries"
 		retries=$((retries + 1))
