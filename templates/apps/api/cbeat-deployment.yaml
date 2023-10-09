@@ -15,48 +15,8 @@ spec:
         helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       initContainers:
-        - name: wait-for-redis-celery
-          image: redis:alpine
-          command:
-            - sh
-            - -c
-            - |
-              retries=0
-              max_retries=10
-              timeout=3
-              while [ "$retries" -lt "$max_retries" ]; do
-                echo "Attempt $retries of $max_retries"
-                retries=$((retries + 1))
-                if redis-cli -h redis-celery -p 6379 ping; then
-                  exit 0
-                else
-                  echo "Failed to connect to Redis, retrying in $timeout seconds..."
-                  sleep "$timeout"
-                fi
-              done
-              echo "Failed to connect to Redis after $max_retries retries, exiting"
-              exit 1
-        - name: wait-for-postgres
-          image: postgres:alpine
-          command:
-        	- sh
-        	- -c
-        	- |
-        	  retries=0
-        	  max_retries=15
-        	  timeout=6
-        	  while [ "$retries" -lt "$max_retries" ]; do
-        		echo "Attempt $retries of $max_retries"
-        		retries=$((retries + 1))
-        		if pg_isready -h postgres -p 5432; then
-        		  exit 0
-        		else
-        		  echo "Failed to connect to Postgres, retrying in $timeout seconds..."
-        		  sleep "$timeout"
-        		fi
-        	  done
-        	  echo "Failed to connect to Postgres after $max_retries retries, exiting"
-        	  exit 1
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-celery") | indent 8 }}
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
       containers:
         - name: cbeat
           image: {{ .Values.api.image }}
