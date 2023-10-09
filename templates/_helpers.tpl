@@ -90,22 +90,22 @@
 - name: wait-for-{{ .postgres_host }}
   image: {{ .postgres_image | default "postgres:alpine" }}
   command:
-	- sh
-	- -c
-	- |
-	  retries=0
-	  max_retries={{ .retries | default 15 }}
-	  timeout={{ .timeout | default 6 }}
-	  while [ "$retries" -lt "$max_retries" ]; do
-		echo "Attempt $retries of $max_retries"
-		retries=$((retries + 1))
-		if pg_isready -h {{ .postgres_host }} -p {{ .postgres_port | default 5432 }}; then
-		  exit 0
-		else
-		  echo "Failed to connect to Postgres, retrying in $timeout seconds..."
-		  sleep "$timeout"
-		fi
-	  done
-	  echo "Failed to connect to Postgres after $max_retries retries, exiting"
-	  exit 1
+    - sh
+    - -c
+    - |
+      retries=0
+      max_retries={{ .retries | default 15 }}
+      timeout={{ .timeout | default 6 }}
+      while [ "$retries" -lt "$max_retries" ]; do
+        echo "Attempt $retries of $max_retries"
+        retries=$((retries + 1))
+        if pg_isready -h {{ .postgres_host }} -p {{ .postgres_port | default 5432 }}; then
+          exit 0
+        else
+          echo "Failed to connect to Postgres, retrying in $timeout seconds..."
+          sleep "$timeout"
+        fi
+      done
+      echo "Failed to connect to Postgres after $max_retries retries, exiting"
+      exit 1
 {{- end }}
