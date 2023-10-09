@@ -73,8 +73,8 @@
       max_retries={{ .retries | default 10 }}
       timeout={{ .timeout | default 3 }}
       while [ "$retries" -lt "$max_retries" ]; do
-        echo "Attempt $retries of $max_retries"
         retries=$((retries + 1))
+        echo "Attempt $retries of $max_retries"
         if redis-cli -h {{ .redis_host }} -p {{ .redis_port | default 6379 }} ping; then
           exit 0
         else
@@ -97,8 +97,8 @@
       max_retries={{ .retries | default 15 }}
       timeout={{ .timeout | default 6 }}
       while [ "$retries" -lt "$max_retries" ]; do
-        echo "Attempt $retries of $max_retries"
         retries=$((retries + 1))
+        echo "Attempt $retries of $max_retries"
         if pg_isready -h {{ .postgres_host }} -p {{ .postgres_port | default 5432 }}; then
           exit 0
         else
