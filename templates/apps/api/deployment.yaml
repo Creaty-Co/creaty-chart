@@ -21,7 +21,7 @@ spec:
         {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
       containers:
         - name: api
-          image: {{ .Values.api.image }}
+          image: {{ include "api_image" . }}
           command: [ gunicorn, api.wsgi, -c, gunicorn/config.py ]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           ports: {{- include "ports" .Values.api.ports | indent 12 }}

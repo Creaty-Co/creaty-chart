@@ -10,7 +10,7 @@ spec:
     spec:
       containers:
         - name: migrate
-          image: {{ .Values.api.image }}
+          image: {{ include "api_image" . }}
           command: [ python, manage.py, migrate ]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
       restartPolicy: Never

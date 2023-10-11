@@ -24,13 +24,13 @@ spec:
           emptyDir: {}
       initContainers:
         - name: init-web
-          image: {{ .Values.nginx.init.web.image }}
+          image: {{ include "web_image" . }}
           command: [ bash, -c, mv /web/* /web-dir ]
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
         - name: init-api
-          image: {{ .Values.api.image }}
+          image: {{ include "api_image" . }}
           command: [ python, manage.py, collectstatic, --noinput ]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           volumeMounts:

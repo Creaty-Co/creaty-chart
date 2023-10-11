@@ -19,7 +19,7 @@ spec:
         {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
       containers:
         - name: cbeat
-          image: {{ .Values.api.image }}
+          image: {{ include "api_image" . }}
           command: [ celery, -A, api, beat, -S, django, -l, info ]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           resources: {{- toYaml .Values.api.cbeat.resources | nindent 12 }}

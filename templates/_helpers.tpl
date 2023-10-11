@@ -22,6 +22,14 @@
     {{- end }}
 {{- end }}
 
+{{- define "api_image" -}}
+{{ .Values.api.image.reference }}:{{ tpl .Values.api.image.tag . }}
+{{- end }}
+
+{{- define "web_image" -}}
+{{ .Values.nginx.init.web.image.reference }}:{{ tpl .Values.nginx.init.web.image.tag . }}
+{{- end }}
+
 {{- define "configmap" }}
 {{- range $name, $config := ._configs }}
   {{ $name }}: |

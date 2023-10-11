@@ -27,7 +27,9 @@ global:
         tls.key: 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
 
 api:
-  image: ghcr.io/creaty-co/creaty-api/api:latest
+  image:
+    reference: ghcr.io/creaty-co/creaty-api/api
+    tag: '{{ .Values.api_version | default "latest" }}'
   replicas: 1
   ports:
     main: 8000
@@ -61,7 +63,7 @@ api:
     SENTRY_DSN:
       secret: api-secrets
     SENTRY_ENVIRONMENT: dev  # FIXME: {{ .Release.Name }}
-    SENTRY_RELEASE: ""  # TODO
+    SENTRY_RELEASE: '{{ .Values.api_version }}'
     POSTGRES_PASSWORD:
       secret: postgres-secrets
       key: POSTGRES_PASSWORD
@@ -109,7 +111,9 @@ api:
 nginx:
   init:
     web:
-      image: ghcr.io/creaty-co/creaty-web/web:latest
+      image:
+        reference: ghcr.io/creaty-co/creaty-web/web
+        tag: '{{ .Values.web_version | default "latest" }}'
   image: nginx:1.25.2
   replicas: 1
   probe:

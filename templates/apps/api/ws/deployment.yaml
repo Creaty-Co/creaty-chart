@@ -21,7 +21,7 @@ spec:
         {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
       containers:
         - name: api-ws
-          image: {{ .Values.api.image }}
+          image: {{ include "api_image" . }}
           command: [ daphne, -b, 0.0.0.0, api.asgi:application ]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           ports: {{- include "ports" .Values.api.ws.ports | indent 12 }}
