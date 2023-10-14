@@ -1,3 +1,225 @@
+api:
+  image:
+    reference: ghcr.io/creaty-co/creaty-api/api
+    tag: '{{ .Values.api_version | default "latest" }}'
+  replicas: 1
+  ports:
+    main: 8000
+  envs:
+    WEB_DOMAIN: '{{ include "web_domain" . }}'
+    API_DOMAIN: '{{ include "api_domain" . }}'
+    SECRET_KEY:
+      secret: api-secrets
+    DEBUG: "1"
+    TEST: "0"
+    ANON_THROTTLE_RATE: 50/s
+    USE_BROWSABLE_API: "1"
+    USE_DEBUG_TOOLBAR: "0"
+    REDIS_CACHE_URL: redis://redis-cache:6379/0
+    REDIS_CACHEOPS_URL: redis://redis-cacheops:6379/0
+    REDIS_STORAGE_URL: redis://redis-storage:6379/0
+    REDIS_CELERY_URL: redis://redis-celery:6379/0
+    EMAIL_HOST: smtp.gmail.com
+    EMAIL_PORT: "465"
+    EMAIL_HOST_USER: hi@creaty.club
+    EMAIL_HOST_PASSWORD:
+      secret: api-secrets
+    EMAIL_URL: "smtp+ssl://{{ .Values.api.envs.EMAIL_HOST_USER }}:\
+      $(EMAIL_HOST_PASSWORD)@{{ .Values.api.envs.EMAIL_HOST }}:\
+      {{ .Values.api.envs.EMAIL_PORT }}"
+    EMAIL_BACKEND: smtp
+    CELERY_TASK_EAGER: "0"
+    CELERY_REDIS_MAX_CONNECTIONS: "1000"
+    CELERY_BROKER_POOL_LIMIT: "1000"
+    CLOUDINARY_URL:
+      secret: api-secrets
+    CLOUDINARY_PREFIX: '{{ .Release.Name }}'
+    SENTRY_DSN:
+      secret: api-secrets
+    SENTRY_ENVIRONMENT: '{{ .Release.Name }}'
+    SENTRY_RELEASE: '{{ .Values.api_version }}'
+    POSTGRES_PASSWORD:
+      secret: postgres-secrets
+    DATABASE_URL: "psql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
+      $(POSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/\
+      {{ .Values.postgres.envs.POSTGRES_DB }}"
+    REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
+    GOOGLE_APP_ID: 806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
+    GOOGLE_APP_SECRET:
+      secret: api-secrets
+    LOG_FORMATTERS: "api=%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s,web=WEB     | %(asctime)s: %(message)s"
+    LOG_PRETTY: "1"
+    LOG_MAX_LENGTH: "130"
+    LOG_REQUESTS: "1"
+    LOG_CONF: api=api_console;gunicorn.server=web_console;daphne.server=web_console
+    LOG_LEVEL: api=INFO
+    FIXER_ACCESS_KEY:
+      secret: api-secrets
+    GUNICORN_WORKERS: "2"
+  resources: { }
+  ws:
+    replicas: 1
+    ports:
+      main: 8000
+    resources: { }
+  celery:
+    resources: { }
+  cbeat:
+    resources: { }
+
+nginx:
+  init:
+    web:
+      image:
+        reference: ghcr.io/creaty-co/creaty-web/web
+        tag: '{{ .Values.web_version | default "latest" }}'
+  image: nginx:1.25.2
+  replicas: 1
+  probe:
+    httpGet:
+      path: /
+      port: main
+    initialDelaySeconds: 2
+    timeoutSeconds: 3
+  ports:
+    main: 80
+  configs:
+    main:
+      path: /etc/nginx/nginx.conf
+      value: '{{ tpl (.Files.Get "configs/nginx/nginx.conf") . }}'
+  resources: { }
+
 redis:
-  maxmemory: 1gb
-  maxmemory_policy: allkeys-lru
+  image: redis:7.2.1
+  ports:
+    main: 6379
+  probe:
+    exec:
+      command: [redis-cli, ping]
+    initialDelaySeconds: 5
+    timeoutSeconds: 3
+  cache:
+    replicas: 1
+    vars:
+      maxmemory: 60Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-cache.conf") . }}'
+    resources: { }
+  cacheops:
+    replicas: 1
+    vars:
+      maxmemory: 30Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-cacheops.conf") . }}'
+    resources: { }
+  storage:
+    replicas: 1
+    vars:
+      maxmemory: 10Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-storage.conf") . }}'
+    resources: { }
+  celery:
+    replicas: 1
+    vars:
+      maxmemory: 20Mi
+    configs:
+      main:
+        path: /usr/local/etc/redis/redis.conf
+        value: '{{ tpl (.Files.Get "configs/redis/redis-celery.conf") . }}'
+    resources: { }
+
+postgres:
+  image: postgres:15.3
+  replicas: 1
+  probes:
+    liveness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 9
+    readiness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+  ports:
+    main: 5432
+  envs:
+    POSTGRES_DB: db
+    POSTGRES_USER: pg
+    PGDATA: /var/lib/postgresql/data/pgdata
+    POSTGRES_PASSWORD:
+      secret: postgres-secrets
+  configs:
+    main:
+      path: /etc/postgresql/postgresql.conf
+      value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
+  resources: { }
+
+cal:
+  image: calcom/cal.com:v3.1.5
+  ports:
+    main: 3000
+  envs:
+    LICENSE: agree
+    NEXT_PUBLIC_LICENSE_CONSENT: agree
+    NEXTAUTH_SECRET:
+      secret: cal-secrets
+    CALENDSO_ENCRYPTION_KEY:
+      secret: cal-secrets
+    EMAIL_SERVER_HOST: '{{ .Values.api.envs.EMAIL_HOST }}'
+    EMAIL_SERVER_PORT: '{{ .Values.api.envs.EMAIL_PORT }}'
+    EMAIL_HOST_USER: '{{ .Values.api.envs.EMAIL_HOST_USER }}'
+    EMAIL_HOST_PASSWORD:
+      secret: api-secrets
+    EMAIL_FROM: <hi@creaty.club>Creaty.Co
+    POSTGRES_PASSWORD:
+      secret: cal-postgres-secrets
+    DATABASE_URL: "postgresql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
+      $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.postgres.ports.main }}/\
+      {{ .Values.postgres.envs.POSTGRES_DB }}"
+  api:
+    envs:
+      NEXT_AUTH_URL: http://cal-api
+      NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
+    resources: { }
+  web:
+    envs:
+      NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
+      NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
+    resources: { }
+
+cal_postgres:
+  image: postgres:15.3
+  replicas: 1
+  probes:
+    liveness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.cal_postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 9
+    readiness:
+      exec:
+        command: [pg_isready, -U, '{{ .Values.cal_postgres.envs.POSTGRES_USER }}']
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+  ports:
+    main: 5432
+  envs:
+    POSTGRES_DB: db
+    POSTGRES_USER: pg
+    PGDATA: /var/lib/postgresql/data/pgdata
+    POSTGRES_PASSWORD:
+      secret: postgres-secrets
+  configs:
+    main:
+      path: /etc/postgresql/postgresql.conf
+      value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
+  resources: { }

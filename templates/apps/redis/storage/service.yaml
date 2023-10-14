@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-storage
+spec:
+  selector:
+    app: redis-storage
+  ports:
+    - port: {{ .Values.redis.ports.main }}

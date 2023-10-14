@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-ws-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-ws
+  template:
+    metadata:
+      labels:
+        app: api-ws
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      initContainers:
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-cache") | indent 8 }}
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-cacheops") | indent 8 }}
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-storage") | indent 8 }}
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
+      containers:
+        - name: api-ws
+          image: {{ include "api_image" . }}
+          command: [daphne, -b, 0.0.0.0, api.asgi:application]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          ports: {{- include "ports" .Values.api.ws.ports | indent 12 }}
+          resources: {{- toYaml .Values.api.ws.resources | nindent 12 }}

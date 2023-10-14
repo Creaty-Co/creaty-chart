@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: migrate-
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+spec:
+  ttlSecondsAfterFinished: 600
+  template:
+    spec:
+      containers:
+        - name: migrate
+          image: {{ include "api_image" . }}
+          command: [python, manage.py, migrate]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+      restartPolicy: Never

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-deployment
+spec:
+  replicas: {{ .Values.api.replicas }}
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      initContainers:
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-cache") | indent 8 }}
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-cacheops") | indent 8 }}
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-storage") | indent 8 }}
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
+      containers:
+        - name: api
+          image: {{ include "api_image" . }}
+          command: [gunicorn, api.wsgi, -c, gunicorn/config.py]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          ports: {{- include "ports" .Values.api.ports | indent 12 }}
+          resources: {{- toYaml .Values.api.resources | nindent 12 }}

@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-storage-deployment
+spec:
+  replicas: {{ .Values.redis.cache.replicas }}
+  selector:
+    matchLabels:
+      app: redis-storage
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: redis-storage-data-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: do-block-storage-xfs-retain
+        resources:
+          requests:
+            storage: 1Gi
+  template:
+    metadata:
+      labels:
+        app: redis-storage
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      volumes:
+        - name: configs
+          configMap:
+            name: redis-storage-configs
+      containers:
+        - name: redis-storage
+          image: {{ .Values.redis.image }}
+          ports: {{- include "ports" .Values.redis.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.redis.storage.configs | indent 12 }}
+            - name: redis-storage-data-pvc
+              mountPath: /data
+          resources: {{- toYaml .Values.redis.storage.resources | nindent 12 }}
+          livenessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
+          readinessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}

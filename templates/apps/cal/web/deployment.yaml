@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cal-web-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cal-web
+  template:
+    metadata:
+      labels:
+        app: cal-web
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      initContainers:
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "cal-postgres") | indent 8 }}
+      containers:
+        - name: cal-web
+          image: {{ .Values.cal.image }}
+          env: {{- include "env" (dict "_" $ "_envs" (merge .Values.cal.envs .Values.cal.web.envs)) | indent 12 }}
+          ports: {{- include "ports" .Values.cal.ports | indent 12 }}
+          resources: {{- toYaml .Values.cal.web.resources | nindent 12 }}

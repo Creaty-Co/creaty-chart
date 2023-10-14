@@ -1,2 +1,0 @@
-redis:
-  maxmemory: 512mb

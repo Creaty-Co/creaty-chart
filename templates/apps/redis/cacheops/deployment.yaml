@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cacheops-deployment
+spec:
+  replicas: {{ .Values.redis.cacheops.replicas }}
+  selector:
+    matchLabels:
+      app: redis-cacheops
+  template:
+    metadata:
+      labels:
+        app: redis-cacheops
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      volumes:
+        - name: configs
+          configMap:
+            name: redis-cacheops-configs
+      containers:
+        - name: redis-cacheops
+          image: {{ .Values.redis.image }}
+          ports: {{- include "ports" .Values.redis.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.redis.cacheops.configs | indent 12 }}
+          resources: {{- toYaml .Values.redis.cacheops.resources | nindent 12 }}
+          livenessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
+          readinessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}

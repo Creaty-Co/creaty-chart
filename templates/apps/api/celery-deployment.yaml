@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: celery-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: celery
+  template:
+    metadata:
+      labels:
+        app: celery
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      initContainers:
+        {{- include "init-wait-for-redis" (dict "redis_host" "redis-celery") | indent 8 }}
+      containers:
+        - name: celery
+          image: {{ include "api_image" . }}
+          command: [celery, -A, api, worker, -c, "2", -P, gevent, -l, info]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          resources: {{- toYaml .Values.api.celery.resources | nindent 12 }}

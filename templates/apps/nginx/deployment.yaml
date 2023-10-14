@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: {{ .Values.nginx.replicas }}
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+      annotations:
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      volumes:
+        - name: configs
+          configMap:
+            name: nginx-configs
+        - name: web-dir
+          emptyDir: { }
+        - name: api-static-dir
+          emptyDir: { }
+      initContainers:
+        - name: init-web
+          image: {{ include "web_image" . }}
+          command: [bash, -c, mv /web/* /web-dir]
+          volumeMounts:
+            - name: web-dir
+              mountPath: /web-dir/
+        - name: init-api
+          image: {{ include "api_image" . }}
+          command: [python, manage.py, collectstatic, --noinput]
+          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          volumeMounts:
+            - name: api-static-dir
+              mountPath: /api/static/
+      containers:
+        - name: nginx
+          image: {{ .Values.nginx.image }}
+          ports: {{- include "ports" .Values.nginx.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.nginx.configs | indent 12 }}
+            - name: web-dir
+              mountPath: /etc/nginx/html/web/
+            - name: api-static-dir
+              mountPath: /etc/nginx/html/api/static/
+          resources: {{- toYaml .Values.nginx.resources | nindent 12 }}
+          livenessProbe: {{- tpl (toYaml .Values.nginx.probe) . | nindent 12 }}
+          readinessProbe: {{- tpl (toYaml .Values.nginx.probe) . | nindent 12 }}
