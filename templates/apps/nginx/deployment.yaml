@@ -19,19 +19,19 @@ spec:
           configMap:
             name: nginx-configs
         - name: web-dir
-          emptyDir: {}
+          emptyDir: { }
         - name: api-static-dir
-          emptyDir: {}
+          emptyDir: { }
       initContainers:
         - name: init-web
           image: {{ include "web_image" . }}
-          command: [ bash, -c, mv /web/* /web-dir ]
+          command: [bash, -c, mv /web/* /web-dir]
           volumeMounts:
             - name: web-dir
               mountPath: /web-dir/
         - name: init-api
           image: {{ include "api_image" . }}
-          command: [ python, manage.py, collectstatic, --noinput ]
+          command: [python, manage.py, collectstatic, --noinput]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           volumeMounts:
             - name: api-static-dir

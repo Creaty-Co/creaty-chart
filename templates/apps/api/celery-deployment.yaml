@@ -19,6 +19,6 @@ spec:
       containers:
         - name: celery
           image: {{ include "api_image" . }}
-          command: [ celery, -A, api, worker, -c, "2", -P, gevent, -l, info ]
+          command: [celery, -A, api, worker, -c, "2", -P, gevent, -l, info]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           resources: {{- toYaml .Values.api.celery.resources | nindent 12 }}

@@ -22,7 +22,7 @@ spec:
       containers:
         - name: api-ws
           image: {{ include "api_image" . }}
-          command: [ daphne, -b, 0.0.0.0, api.asgi:application ]
+          command: [daphne, -b, 0.0.0.0, api.asgi:application]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
           ports: {{- include "ports" .Values.api.ws.ports | indent 12 }}
           resources: {{- toYaml .Values.api.ws.resources | nindent 12 }}

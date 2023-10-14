@@ -40,7 +40,7 @@ spec:
       containers:
         - name: postgres
           image: {{ .Values.postgres.image }}
-          args: [ -c, config_file={{ .Values.postgres.configs.main.path }} ]
+          args: [-c, config_file={{ .Values.postgres.configs.main.path }} ]
           env: {{- include "env" (dict "_" $ "_envs" .Values.postgres.envs) | indent 12 }}
           ports: {{- include "ports" .Values.postgres.ports | indent 12 }}
           volumeMounts: {{- include "configs" .Values.postgres.configs | indent 12 }}
