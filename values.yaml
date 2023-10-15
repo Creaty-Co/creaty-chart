@@ -1,7 +1,37 @@
+api_version: latest
+web_version: latest
+
+global:
+  nodePorts: { }
+  secrets:
+    Opaque:
+      global-api-secrets:
+        CLOUDINARY_URL: change me !
+        EMAIL_HOST_PASSWORD: change me !
+        FIXER_ACCESS_KEY: change me !
+        GOOGLE_APP_SECRET: change me !
+        SENTRY_DSN: change me !
+      global-cal-secrets:
+        CALENDSO_ENCRYPTION_KEY: change me !
+        NEXTAUTH_SECRET: change me !
+    kubernetes.io/tls:
+      global-tls-secret:
+        tls.crt: change me !
+        tls.key: change me !
+
+secrets:
+  Opaque:
+    api-secrets:
+      SECRET_KEY: change me !
+    postgres-secrets:
+      POSTGRES_PASSWORD: change me !
+    cal-postgres-secrets:
+      POSTGRES_PASSWORD: change me !
+
 api:
   image:
     reference: ghcr.io/creaty-co/creaty-api/api
-    tag: '{{ .Values.api_version | default "latest" }}'
+    tag: '{{ .Values.api_version }}'
   replicas: 1
   ports:
     main: 8000
@@ -23,7 +53,7 @@ api:
     EMAIL_PORT: "465"
     EMAIL_HOST_USER: hi@creaty.club
     EMAIL_HOST_PASSWORD:
-      secret: api-secrets
+      secret: global-api-secrets
     EMAIL_URL: "smtp+ssl://{{ .Values.api.envs.EMAIL_HOST_USER }}:\
       $(EMAIL_HOST_PASSWORD)@{{ .Values.api.envs.EMAIL_HOST }}:\
       {{ .Values.api.envs.EMAIL_PORT }}"
@@ -32,10 +62,10 @@ api:
     CELERY_REDIS_MAX_CONNECTIONS: "1000"
     CELERY_BROKER_POOL_LIMIT: "1000"
     CLOUDINARY_URL:
-      secret: api-secrets
+      secret: global-api-secrets
     CLOUDINARY_PREFIX: '{{ .Release.Name }}'
     SENTRY_DSN:
-      secret: api-secrets
+      secret: global-api-secrets
     SENTRY_ENVIRONMENT: '{{ .Release.Name }}'
     SENTRY_RELEASE: '{{ .Values.api_version }}'
     POSTGRES_PASSWORD:
@@ -46,7 +76,7 @@ api:
     REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
     GOOGLE_APP_ID: 806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
     GOOGLE_APP_SECRET:
-      secret: api-secrets
+      secret: global-api-secrets
     LOG_FORMATTERS: "api=%(levelname)-8s| %(name)s %(asctime)s <%(module)s->%(funcName)s(%(lineno)d)>: %(message)s,web=WEB     | %(asctime)s: %(message)s"
     LOG_PRETTY: "1"
     LOG_MAX_LENGTH: "130"
@@ -54,7 +84,7 @@ api:
     LOG_CONF: api=api_console;gunicorn.server=web_console;daphne.server=web_console
     LOG_LEVEL: api=INFO
     FIXER_ACCESS_KEY:
-      secret: api-secrets
+      secret: global-api-secrets
     GUNICORN_WORKERS: "2"
   resources: { }
   ws:
@@ -72,7 +102,7 @@ nginx:
     web:
       image:
         reference: ghcr.io/creaty-co/creaty-web/web
-        tag: '{{ .Values.web_version | default "latest" }}'
+        tag: '{{ .Values.web_version }}'
   image: nginx:1.25.2
   replicas: 1
   probe:
@@ -171,14 +201,14 @@ cal:
     LICENSE: agree
     NEXT_PUBLIC_LICENSE_CONSENT: agree
     NEXTAUTH_SECRET:
-      secret: cal-secrets
+      secret: global-cal-secrets
     CALENDSO_ENCRYPTION_KEY:
-      secret: cal-secrets
+      secret: global-cal-secrets
     EMAIL_SERVER_HOST: '{{ .Values.api.envs.EMAIL_HOST }}'
     EMAIL_SERVER_PORT: '{{ .Values.api.envs.EMAIL_PORT }}'
     EMAIL_HOST_USER: '{{ .Values.api.envs.EMAIL_HOST_USER }}'
     EMAIL_HOST_PASSWORD:
-      secret: api-secrets
+      secret: global-api-secrets
     EMAIL_FROM: <hi@creaty.club>Creaty.Co
     POSTGRES_PASSWORD:
       secret: cal-postgres-secrets
