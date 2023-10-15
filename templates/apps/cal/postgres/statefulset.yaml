@@ -35,7 +35,7 @@ spec:
             defaultMode: 0400
         - name: tls
           secret:
-            secretName: tls-secret
+            secretName: global-tls-secret
             defaultMode: 0400
       containers:
         - name: cal-postgres
