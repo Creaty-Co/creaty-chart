@@ -49,5 +49,5 @@ spec:
             - name: tls
               mountPath: /tls/
           resources: {{- toYaml .Values.postgres.resources | nindent 12 }}
-          livenessProbe: {{- tpl (toYaml .Values.postgres.probes.liveness) . | nindent 12 }}
-          readinessProbe: {{- tpl (toYaml .Values.postgres.probes.readiness) . | nindent 12 }}
+          # livenessProbe: {{- tpl (toYaml .Values.postgres.probes.liveness) . | nindent 12 }}
+          # readinessProbe: {{- tpl (toYaml .Values.postgres.probes.readiness) . | nindent 12 }}
