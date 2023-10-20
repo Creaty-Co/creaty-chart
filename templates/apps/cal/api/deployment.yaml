@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cal-api-deployment
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   selector:
@@ -11,8 +13,6 @@ spec:
     metadata:
       labels:
         app: cal-api
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       initContainers:
         {{- include "init-wait-for-postgres" (dict "postgres_host" "cal-postgres") | indent 8 }}

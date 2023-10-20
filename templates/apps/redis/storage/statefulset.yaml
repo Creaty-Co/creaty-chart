@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: redis-storage-deployment
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: {{ .Values.redis.cache.replicas }}
   selector:
@@ -23,8 +25,6 @@ spec:
     metadata:
       labels:
         app: redis-storage
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       volumes:
         - name: configs

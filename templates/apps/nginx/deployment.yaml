@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: {{ .Values.nginx.replicas }}
   selector:
@@ -11,8 +13,6 @@ spec:
     metadata:
       labels:
         app: nginx
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       volumes:
         - name: configs

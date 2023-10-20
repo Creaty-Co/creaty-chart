@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-cache-deployment
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: {{ .Values.redis.cache.replicas }}
   selector:
@@ -11,8 +13,6 @@ spec:
     metadata:
       labels:
         app: redis-cache
-      annotations:
-        helm.sh/revision: "{{ .Release.Revision }}"
     spec:
       volumes:
         - name: configs
