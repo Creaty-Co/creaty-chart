@@ -33,7 +33,7 @@ secrets:
 api:
   image:
     reference: ghcr.io/creaty-co/creaty-api/api
-    tag: '{{ .Values.api_version }}'
+    tag: '{{ tpl .Values.api_version . }}'
   replicas: 1
   ports:
     main: 8000
