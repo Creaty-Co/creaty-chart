@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: postgres
-  replicas: {{ .Values.postgres.replicas }}
+  replicas: {{ tpl (toString .Values.postgres.replicas) . }}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim

@@ -5,7 +5,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: {{ .Values.cal.web.replicas }}
+  replicas: {{ tpl (toString .Values.cal.web.replicas) . }}
   selector:
     matchLabels:
       app: cal-web

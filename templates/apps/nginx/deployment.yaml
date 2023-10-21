@@ -5,7 +5,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: {{ .Values.nginx.replicas }}
+  replicas: {{ tpl (toString .Values.nginx.replicas) . }}
   selector:
     matchLabels:
       app: nginx

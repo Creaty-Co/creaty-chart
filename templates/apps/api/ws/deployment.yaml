@@ -5,7 +5,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: 1
+  replicas: {{ tpl (toString .Values.api.ws.replicas) . }}
   selector:
     matchLabels:
       app: api-ws

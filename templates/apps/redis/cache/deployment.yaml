@@ -5,7 +5,7 @@ metadata:
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: {{ .Values.redis.cache.replicas }}
+  replicas: {{ tpl (toString .Values.redis.cache.replicas) . }}
   selector:
     matchLabels:
       app: redis-cache

@@ -95,8 +95,10 @@ api:
       main: 8000
     resources: { }
   celery:
+    replicas: 1
     resources: { }
   cbeat:
+    replicas: 1
     resources: { }
 
 nginx:
