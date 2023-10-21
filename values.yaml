@@ -218,11 +218,13 @@ cal:
       $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.postgres.ports.main }}/\
       {{ .Values.postgres.envs.POSTGRES_DB }}"
   api:
+    replicas: 1
     envs:
       NEXT_AUTH_URL: http://cal-api
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
     resources: { }
   web:
+    replicas: 1
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
