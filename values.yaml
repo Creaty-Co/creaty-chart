@@ -88,18 +88,26 @@ api:
     FIXER_ACCESS_KEY:
       secret: global-api-secrets
     GUNICORN_WORKERS: "2"
-  resources: { }
+  resources:
+    requests:
+      memory: 250Mi
   ws:
     replicas: 1
     ports:
       main: 8000
-    resources: { }
+    resources:
+      requests:
+        memory: 110Mi
   celery:
     replicas: 1
-    resources: { }
+    resources:
+      requests:
+        memory: 140Mi
   cbeat:
     replicas: 1
-    resources: { }
+    resources:
+      requests:
+        memory: 110Mi
 
 nginx:
   init:
@@ -121,7 +129,9 @@ nginx:
     main:
       path: /etc/nginx/nginx.conf
       value: '{{ tpl (.Files.Get "configs/nginx/nginx.conf") . }}'
-  resources: { }
+  resources:
+    requests:
+      memory: 10Mi
 
 redis:
   image: redis:7.2.1
@@ -140,7 +150,9 @@ redis:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-cache.conf") . }}'
-    resources: { }
+    resources:
+      requests:
+        memory: 30Mi
   cacheops:
     replicas: 1
     vars:
@@ -149,7 +161,9 @@ redis:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-cacheops.conf") . }}'
-    resources: { }
+    resources:
+      requests:
+        memory: 15Mi
   storage:
     replicas: 1
     vars:
@@ -158,7 +172,9 @@ redis:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-storage.conf") . }}'
-    resources: { }
+    resources:
+      requests:
+        memory: 5Mi
   celery:
     replicas: 1
     vars:
@@ -167,7 +183,9 @@ redis:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-celery.conf") . }}'
-    resources: { }
+    resources:
+      requests:
+        memory: 10Mi
 
 postgres:
   image: postgres:15.3
@@ -195,7 +213,9 @@ postgres:
     main:
       path: /etc/postgresql/postgresql.conf
       value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources: { }
+  resources:
+    requests:
+      memory: 50Mi
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -224,13 +244,17 @@ cal:
     envs:
       NEXT_AUTH_URL: http://cal-api
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
-    resources: { }
+    resources:
+      requests:
+        memory: 350Mi
   web:
     replicas: 1
     envs:
       NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
-    resources: { }
+    resources:
+      requests:
+        memory: 350Mi
 
 cal_postgres:
   image: postgres:15.3
@@ -258,4 +282,6 @@ cal_postgres:
     main:
       path: /etc/postgresql/postgresql.conf
       value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
-  resources: { }
+  resources:
+    requests:
+      memory: 40Mi
