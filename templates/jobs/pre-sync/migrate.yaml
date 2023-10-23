@@ -1,3 +1,4 @@
+{{- if .Values.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -8,9 +9,12 @@ spec:
   ttlSecondsAfterFinished: 300
   template:
     spec:
+      initContainers:
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "postgres") | indent 8 }}
       containers:
         - name: migrate
           image: {{ include "api_image" . }}
           command: [python, manage.py, migrate]
           env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
       restartPolicy: Never
+{{- end }}

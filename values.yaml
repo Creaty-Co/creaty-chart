@@ -1,3 +1,5 @@
+enabled: true
+
 version: latest
 api_version: '{{ tpl .Values.version . }}'
 web_version: '{{ tpl .Values.version . }}'
