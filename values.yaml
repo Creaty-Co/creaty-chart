@@ -61,8 +61,8 @@ api:
       {{ .Values.api.envs.EMAIL_PORT }}"
     EMAIL_BACKEND: smtp
     CELERY_TASK_EAGER: "0"
-    CELERY_REDIS_MAX_CONNECTIONS: "1000"
-    CELERY_BROKER_POOL_LIMIT: "1000"
+    CELERY_REDIS_MAX_CONNECTIONS: "50"
+    CELERY_BROKER_POOL_LIMIT: "50"
     CLOUDINARY_URL:
       secret: global-api-secrets
     CLOUDINARY_PREFIX: '{{ .Release.Name }}'
@@ -87,7 +87,7 @@ api:
     LOG_LEVEL: api=INFO
     FIXER_ACCESS_KEY:
       secret: global-api-secrets
-    GUNICORN_WORKERS: "2"
+    GUNICORN_WORKERS: "1"
   resources:
     requests:
       memory: 250Mi
