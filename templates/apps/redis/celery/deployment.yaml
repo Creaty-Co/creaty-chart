@@ -1,7 +1,7 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: redis-celery-statefulset
+  name: redis-celery-deployment
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
@@ -9,18 +9,6 @@ spec:
   selector:
     matchLabels:
       app: redis-celery
-  volumeClaimTemplates:
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      metadata:
-        name: redis-celery-data-pvc
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        storageClassName: do-block-storage-xfs-retain
-        resources:
-          requests:
-            storage: 1Gi
   template:
     metadata:
       labels:
@@ -35,8 +23,6 @@ spec:
           image: {{ .Values.redis.image }}
           ports: {{- include "ports" .Values.redis.ports | indent 12 }}
           volumeMounts: {{- include "configs" .Values.redis.celery.configs | indent 12 }}
-            - name: redis-celery-data-pvc
-              mountPath: /data
           resources: {{- toYaml .Values.redis.celery.resources | nindent 12 }}
           livenessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
           readinessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
