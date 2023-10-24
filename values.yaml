@@ -248,9 +248,9 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
     resources:
       requests:
-        memory: 350Mi
-      limits:
         memory: 400Mi
+      limits:
+        memory: 600Mi
   web:
     replicas: 1
     envs:
@@ -258,9 +258,9 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
     resources:
       requests:
-        memory: 350Mi
-      limits:
         memory: 400Mi
+      limits:
+        memory: 600Mi
 
 cal_postgres:
   image: postgres:15.3
