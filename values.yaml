@@ -249,6 +249,8 @@ cal:
     resources:
       requests:
         memory: 350Mi
+      limits:
+        memory: 400Mi
   web:
     replicas: 1
     envs:
@@ -257,6 +259,8 @@ cal:
     resources:
       requests:
         memory: 350Mi
+      limits:
+        memory: 400Mi
 
 cal_postgres:
   image: postgres:15.3
