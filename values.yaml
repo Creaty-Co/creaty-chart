@@ -104,7 +104,9 @@ api:
     replicas: 1
     resources:
       requests:
-        memory: 140Mi
+        memory: 100Mi
+      limits:
+        memory: 130Mi
   cbeat:
     replicas: 1
     resources:
@@ -248,9 +250,9 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
     resources:
       requests:
-        memory: 400Mi
+        memory: 350Mi
       limits:
-        memory: 600Mi
+        memory: 450Mi
   web:
     replicas: 1
     envs:
@@ -258,9 +260,9 @@ cal:
       NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
     resources:
       requests:
-        memory: 400Mi
+        memory: 350Mi
       limits:
-        memory: 600Mi
+        memory: 450Mi
 
 cal_postgres:
   image: postgres:15.3
