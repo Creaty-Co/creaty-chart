@@ -94,7 +94,7 @@ api:
     requests:
       memory: 124Mi
     limits:
-      memory: 151Mi
+      memory: 186Mi
   ws:
     replicas: 1
     ports:
@@ -103,21 +103,21 @@ api:
       requests:
         memory: 104Mi
       limits:
-        memory: 114Mi
+        memory: 156Mi
   celery:
     replicas: 1
     resources:
       requests:
         memory: 122Mi
       limits:
-        memory: 146Mi
+        memory: 183Mi
   cbeat:
     replicas: 1
     resources:
       requests:
         memory: 110Mi
       limits:
-        memory: 122Mi
+        memory: 165Mi
 
 nginx:
   init:
@@ -143,7 +143,7 @@ nginx:
     requests:
       memory: 5Mi
     limits:
-      memory: 7Mi
+      memory: 8Mi
 
 redis:
   image: redis:7.2.1
@@ -209,6 +209,13 @@ redis:
 
 postgres:
   image: postgres:15.3
+  vars:
+    shared_buffers: 8MB
+    temp_buffers: 2MB
+    work_mem: 1MB
+    maintenance_work_mem: 8MB
+    max_stack_depth: 1MB
+    effective_cache_size: 16MB
   replicas: 1
   probes:
     liveness:
@@ -237,7 +244,7 @@ postgres:
     requests:
       memory: 38Mi
     limits:
-      memory: 47Mi
+      memory: 57Mi
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -270,7 +277,7 @@ cal:
       requests:
         memory: 400Mi
       limits:
-        memory: 700Mi
+        memory: 600Mi
   web:
     replicas: 1
     envs:
@@ -280,10 +287,17 @@ cal:
       requests:
         memory: 400Mi
       limits:
-        memory: 700Mi
+        memory: 600Mi
 
 cal_postgres:
   image: postgres:15.3
+  vars:
+    shared_buffers: 8MB
+    temp_buffers: 2MB
+    work_mem: 1MB
+    maintenance_work_mem: 8MB
+    max_stack_depth: 1MB
+    effective_cache_size: 16MB
   replicas: 1
   probes:
     liveness:
@@ -312,4 +326,4 @@ cal_postgres:
     requests:
       memory: 38Mi
     limits:
-      memory: 47Mi
+      memory: 57Mi
