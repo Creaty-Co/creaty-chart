@@ -78,7 +78,7 @@
     - -c
     - |
       retries=0
-      max_retries={{ .retries | default 10 }}
+      max_retries={{ .retries | default 20 }}
       timeout={{ .timeout | default 3 }}
       while [ "$retries" -lt "$max_retries" ]; do
         retries=$((retries + 1))
@@ -102,7 +102,7 @@
     - -c
     - |
       retries=0
-      max_retries={{ .retries | default 15 }}
+      max_retries={{ .retries | default 30 }}
       timeout={{ .timeout | default 6 }}
       while [ "$retries" -lt "$max_retries" ]; do
         retries=$((retries + 1))
