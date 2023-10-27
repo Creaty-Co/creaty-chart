@@ -92,26 +92,32 @@ api:
     GUNICORN_WORKERS: "1"
   resources:
     requests:
-      memory: 250Mi
+      memory: 124Mi
+    limits:
+      memory: 151Mi
   ws:
     replicas: 1
     ports:
       main: 8000
     resources:
       requests:
-        memory: 110Mi
+        memory: 104Mi
+      limits:
+        memory: 114Mi
   celery:
     replicas: 1
     resources:
       requests:
-        memory: 100Mi
+        memory: 122Mi
       limits:
-        memory: 130Mi
+        memory: 146Mi
   cbeat:
     replicas: 1
     resources:
       requests:
         memory: 110Mi
+      limits:
+        memory: 122Mi
 
 nginx:
   init:
@@ -135,7 +141,9 @@ nginx:
       value: '{{ tpl (.Files.Get "configs/nginx/nginx.conf") . }}'
   resources:
     requests:
-      memory: 10Mi
+      memory: 5Mi
+    limits:
+      memory: 7Mi
 
 redis:
   image: redis:7.2.1
@@ -149,47 +157,55 @@ redis:
   cache:
     replicas: 1
     vars:
-      maxmemory: 60Mi
+      maxmemory: 20Mi
     configs:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-cache.conf") . }}'
     resources:
       requests:
-        memory: 30Mi
+        memory: 15Mi
+      limits:
+        memory: 25Mi
   cacheops:
     replicas: 1
     vars:
-      maxmemory: 30Mi
+      maxmemory: 15Mi
     configs:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-cacheops.conf") . }}'
     resources:
       requests:
-        memory: 15Mi
+        memory: 10Mi
+      limits:
+        memory: 20Mi
   storage:
     replicas: 1
     vars:
-      maxmemory: 10Mi
+      maxmemory: 40Mi
     configs:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-storage.conf") . }}'
     resources:
       requests:
-        memory: 5Mi
+        memory: 35Mi
+      limits:
+        memory: 45Mi
   celery:
     replicas: 1
     vars:
-      maxmemory: 20Mi
+      maxmemory: 30Mi
     configs:
       main:
         path: /usr/local/etc/redis/redis.conf
         value: '{{ tpl (.Files.Get "configs/redis/redis-celery.conf") . }}'
     resources:
       requests:
-        memory: 10Mi
+        memory: 25Mi
+      limits:
+        memory: 35Mi
 
 postgres:
   image: postgres:15.3
@@ -219,7 +235,9 @@ postgres:
       value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
   resources:
     requests:
-      memory: 50Mi
+      memory: 38Mi
+    limits:
+      memory: 47Mi
 
 cal:
   image: calcom/cal.com:v3.1.5
@@ -292,4 +310,6 @@ cal_postgres:
       value: '{{ tpl (.Files.Get "configs/postgres/postgresql.conf") . }}'
   resources:
     requests:
-      memory: 40Mi
+      memory: 38Mi
+    limits:
+      memory: 47Mi
