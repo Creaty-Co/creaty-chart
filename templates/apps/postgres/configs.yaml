@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: postgres-configs
-data: {{- include "configmap" (dict "_" $ "_configs" .Values.postgres.configs) }}
+data: {{- include "configmap" (dict "_" .Values.postgres.vars "_configs" .Values.postgres.configs) }}
