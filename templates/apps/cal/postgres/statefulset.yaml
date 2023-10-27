@@ -41,7 +41,7 @@ spec:
         - name: cal-postgres
           image: {{ .Values.cal_postgres.image }}
           args: [-c, config_file={{ .Values.cal_postgres.configs.main.path }} ]
-          env: {{- include "env" (dict "_" $ "_envs" .Values.cal_postgres.envs) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" .Values.cal_postgres.envs) | indent 12 }}
           ports: {{- include "ports" .Values.cal_postgres.ports | indent 12 }}
           volumeMounts: {{- include "configs" .Values.cal_postgres.configs | indent 12 }}
             - name: cal-postgres-data-pvc

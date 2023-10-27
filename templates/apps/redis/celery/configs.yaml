@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-celery-configs
-data: {{- include "configmap" (dict "_" $ "_configs" .Values.redis.celery.configs) }}
+data: {{- include "configmap" (dict "_" $ "vars" .Values.redis.celery.vars "configs" .Values.redis.celery.configs) }}

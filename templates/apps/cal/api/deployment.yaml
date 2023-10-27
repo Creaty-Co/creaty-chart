@@ -19,6 +19,6 @@ spec:
       containers:
         - name: cal-api
           image: {{ .Values.cal.image }}
-          env: {{- include "env" (dict "_" $ "_envs" (merge .Values.cal.envs .Values.cal.api.envs)) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" (merge .Values.cal.envs .Values.cal.api.envs)) | indent 12 }}
           ports: {{- include "ports" .Values.cal.ports | indent 12 }}
           resources: {{- toYaml .Values.cal.api.resources | nindent 12 }}

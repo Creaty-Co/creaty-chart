@@ -15,6 +15,6 @@ spec:
         - name: migrate
           image: {{ include "api_image" . }}
           command: [python, manage.py, migrate]
-          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" .Values.api.envs) | indent 12 }}
       restartPolicy: Never
 {{- end }}

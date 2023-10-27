@@ -32,7 +32,7 @@ spec:
         - name: init-api
           image: {{ include "api_image" . }}
           command: [python, manage.py, collectstatic, --noinput]
-          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" .Values.api.envs) | indent 12 }}
           volumeMounts:
             - name: api-static-dir
               mountPath: /api/static/

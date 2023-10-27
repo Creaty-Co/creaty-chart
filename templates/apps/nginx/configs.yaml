@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-configs
-data: {{- include "configmap" (dict "_" $ "_configs" .Values.nginx.configs) }}
+data: {{- include "configmap" (dict "_" $ "configs" .Values.nginx.configs) }}

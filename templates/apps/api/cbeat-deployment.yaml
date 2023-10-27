@@ -21,5 +21,5 @@ spec:
         - name: cbeat
           image: {{ include "api_image" . }}
           command: [celery, -A, api, beat, -S, django, -l, info]
-          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" .Values.api.envs) | indent 12 }}
           resources: {{- toYaml .Values.api.cbeat.resources | nindent 12 }}

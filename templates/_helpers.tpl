@@ -31,9 +31,9 @@
 {{- end }}
 
 {{- define "configmap" }}
-{{- range $name, $config := ._configs }}
+{{- range $name, $config := .configs }}
   {{ $name }}: |
-    {{- (tpl $config.value $._) | trim | nindent 4 }}
+    {{- (tpl $config.value (merge $._ (dict "_vars" $.vars))) | trim | nindent 4 }}
 {{- end }}
 {{- end }}
 
@@ -46,7 +46,7 @@
 {{- end -}}
 
 {{- define "env" }}
-{{- range $name, $value := ._envs }}
+{{- range $name, $value := .envs }}
   {{- if and (kindIs "map" $value) (hasKey $value "secret") }}
 - name: {{ $name }}
   valueFrom:
@@ -55,7 +55,7 @@
       key: {{ default $name $value.key }}
   {{- end }}
 {{- end }}
-{{- range $name, $value := ._envs }}
+{{- range $name, $value := .envs }}
   {{- if not (and (kindIs "map" $value) (hasKey $value "secret")) }}
 - name: {{ $name }}
   value: {{ quote (tpl $value $._) }}

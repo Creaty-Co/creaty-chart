@@ -23,6 +23,6 @@ spec:
         - name: api
           image: {{ include "api_image" . }}
           command: [gunicorn, api.wsgi, -c, gunicorn/config.py]
-          env: {{- include "env" (dict "_" $ "_envs" .Values.api.envs) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" .Values.api.envs) | indent 12 }}
           ports: {{- include "ports" .Values.api.ports | indent 12 }}
           resources: {{- toYaml .Values.api.resources | nindent 12 }}

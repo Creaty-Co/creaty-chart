@@ -19,6 +19,6 @@ spec:
       containers:
         - name: cal-web
           image: {{ .Values.cal.image }}
-          env: {{- include "env" (dict "_" $ "_envs" (merge .Values.cal.envs .Values.cal.web.envs)) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" (merge .Values.cal.envs .Values.cal.web.envs)) | indent 12 }}
           ports: {{- include "ports" .Values.cal.ports | indent 12 }}
           resources: {{- toYaml .Values.cal.web.resources | nindent 12 }}

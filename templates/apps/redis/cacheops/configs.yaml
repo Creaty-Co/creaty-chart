@@ -2,4 +2,4 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-cacheops-configs
-data: {{- include "configmap" (dict "_" $ "_configs" .Values.redis.cacheops.configs) }}
+data: {{- include "configmap" (dict "_" $ "vars" .Values.redis.cacheops.vars "configs" .Values.redis.cacheops.configs) }}
