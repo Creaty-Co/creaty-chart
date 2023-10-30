@@ -1,0 +1,15 @@
+name-template: 'v$NEXT_MINOR_VERSION 🔥'
+tag-template: 'v$NEXT_MINOR_VERSION'
+
+exclude-contributors:
+  - dependabot
+  - github-actions[bot]
+  - pre-commit-ci
+
+change-template: |
+  - $TITLE in #$NUMBER
+
+template: |
+  # Changes
+  
+  $CHANGES
