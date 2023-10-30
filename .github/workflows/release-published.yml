@@ -1,0 +1,10 @@
+name: "Release: published"
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release_draft:
+    uses: ./.github/workflows/call-release_draft.yml
+    secrets: inherit
