@@ -274,7 +274,7 @@ cal:
     requests:
       memory: 400Mi
     limits:
-      memory: 600Mi
+      memory: 800Mi
 
 cal_postgres:
   image: postgres:15.3
