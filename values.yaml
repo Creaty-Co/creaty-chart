@@ -42,6 +42,7 @@ api:
   envs:
     WEB_DOMAIN: '{{ include "web_domain" . }}'
     API_DOMAIN: '{{ include "api_domain" . }}'
+    CAL_API_DOMAIN: cal
     SECRET_KEY:
       secret: api-secrets
     DEBUG: "1"
@@ -248,46 +249,26 @@ postgres:
 
 cal:
   image: calcom/cal.com:v3.1.5
+  replicas: 1
   ports:
     main: 3000
   envs:
-    LICENSE: agree
-    NEXT_PUBLIC_LICENSE_CONSENT: agree
+    NEXT_AUTH_URL: http://cal/api/auth
+    NEXT_PUBLIC_WEBAPP_URL: http://cal
     NEXTAUTH_SECRET:
       secret: global-cal-secrets
     CALENDSO_ENCRYPTION_KEY:
       secret: global-cal-secrets
-    EMAIL_SERVER_HOST: '{{ .Values.api.envs.EMAIL_HOST }}'
-    EMAIL_SERVER_PORT: '{{ .Values.api.envs.EMAIL_PORT }}'
-    EMAIL_HOST_USER: '{{ .Values.api.envs.EMAIL_HOST_USER }}'
-    EMAIL_HOST_PASSWORD:
-      secret: global-api-secrets
-    EMAIL_FROM: <hi@creaty.club>Creaty.Co
     POSTGRES_PASSWORD:
       secret: cal-postgres-secrets
     DATABASE_URL: "postgresql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
       $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.postgres.ports.main }}/\
       {{ .Values.postgres.envs.POSTGRES_DB }}"
-  api:
-    replicas: 1
-    envs:
-      NEXT_AUTH_URL: http://cal-api
-      NEXT_PUBLIC_WEBAPP_URL: http://cal-api/api/auth
-    resources:
-      requests:
-        memory: 400Mi
-      limits:
-        memory: 600Mi
-  web:
-    replicas: 1
-    envs:
-      NEXT_AUTH_URL: 'https://{{ include "cal_domain" . }}/api/auth'
-      NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "cal_domain" . }}'
-    resources:
-      requests:
-        memory: 400Mi
-      limits:
-        memory: 600Mi
+  resources:
+    requests:
+      memory: 400Mi
+    limits:
+      memory: 600Mi
 
 cal_postgres:
   image: postgres:15.3

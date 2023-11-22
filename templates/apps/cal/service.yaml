@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cal-web
+  name: cal
 spec:
   selector:
-    app: cal-web
+    app: cal
   ports:
     - port: 80
       targetPort: {{ .Values.cal.ports.main }}

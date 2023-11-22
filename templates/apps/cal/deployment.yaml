@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cal-api-deployment
+  name: cal-deployment
   annotations:
     reloader.stakater.com/auto: "true"
 spec:
-  replicas: {{ tpl (toString .Values.cal.api.replicas) . }}
+  replicas: {{ tpl (toString .Values.cal.replicas) . }}
   selector:
     matchLabels:
-      app: cal-api
+      app: cal
   template:
     metadata:
       labels:
-        app: cal-api
+        app: cal
     spec:
       initContainers:
         {{- include "init-wait-for-postgres" (dict "postgres_host" "cal-postgres") | indent 8 }}
       containers:
-        - name: cal-api
+        - name: cal
           image: {{ .Values.cal.image }}
-          env: {{- include "env" (dict "_" $ "envs" (merge .Values.cal.envs .Values.cal.api.envs)) | indent 12 }}
+          env: {{- include "env" (dict "_" $ "envs" (merge .Values.envs .Values.cal.envs)) | indent 12 }}
           ports: {{- include "ports" .Values.cal.ports | indent 12 }}
-          resources: {{- toYaml .Values.cal.api.resources | nindent 12 }}
+          resources: {{- toYaml .Values.cal.resources | nindent 12 }}
