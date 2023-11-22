@@ -78,6 +78,11 @@ api:
     DATABASE_URL: "psql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
       $(POSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/\
       {{ .Values.postgres.envs.POSTGRES_DB }}"
+    CAL_POSTGRES_PASSWORD:
+      secret: cal-postgres-secrets
+    CAL_DATABASE_URL: "postgresql://{{ .Values.cal_postgres.envs.POSTGRES_USER }}:\
+      $(CAL_POSTGRES_PASSWORD)@cal-postgres:{{ .Values.cal_postgres.ports.main }}/\
+      {{ .Values.cal_postgres.envs.POSTGRES_DB }}"
     REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
     GOOGLE_APP_ID: 806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
     GOOGLE_APP_SECRET:
@@ -261,9 +266,9 @@ cal:
       secret: global-cal-secrets
     POSTGRES_PASSWORD:
       secret: cal-postgres-secrets
-    DATABASE_URL: "postgresql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
-      $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.postgres.ports.main }}/\
-      {{ .Values.postgres.envs.POSTGRES_DB }}"
+    DATABASE_URL: "postgresql://{{ .Values.cal_postgres.envs.POSTGRES_USER }}:\
+      $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.cal_postgres.ports.main }}/\
+      {{ .Values.cal_postgres.envs.POSTGRES_DB }}"
   resources:
     requests:
       memory: 400Mi
