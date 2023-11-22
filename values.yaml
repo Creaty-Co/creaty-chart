@@ -80,6 +80,7 @@ api:
       {{ .Values.postgres.envs.POSTGRES_DB }}"
     CAL_POSTGRES_PASSWORD:
       secret: cal-postgres-secrets
+      key: POSTGRES_PASSWORD
     CAL_DATABASE_URL: "postgresql://{{ .Values.cal_postgres.envs.POSTGRES_USER }}:\
       $(CAL_POSTGRES_PASSWORD)@cal-postgres:{{ .Values.cal_postgres.ports.main }}/\
       {{ .Values.cal_postgres.envs.POSTGRES_DB }}"
