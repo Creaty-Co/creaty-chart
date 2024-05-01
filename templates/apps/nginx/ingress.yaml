@@ -25,3 +25,10 @@ spec:
               name: nginx
               port:
                 number: 80
+  tls:
+    - hosts:
+        - {{ include "web_domain" . }}
+      secretName: web-tls
+    - hosts:
+        - {{ include "api_domain" . }}
+      secretName: api-tls
