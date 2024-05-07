@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: redis-storage
+  {{- if .Values.redis.storage.volumes.data.enabled }}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim
@@ -20,7 +21,8 @@ spec:
         storageClassName: do-block-storage-xfs-retain
         resources:
           requests:
-            storage: 1Gi
+            storage: {{ .Values.redis.storage.volumes.data.capacity }}
+  {{- end }}
   template:
     metadata:
       labels:
@@ -35,8 +37,10 @@ spec:
           image: {{ .Values.redis.image }}
           ports: {{- include "ports" .Values.redis.ports | indent 12 }}
           volumeMounts: {{- include "configs" .Values.redis.storage.configs | indent 12 }}
+          {{- if .Values.redis.storage.volumes.data.enabled }}
             - name: redis-storage-data-pvc
               mountPath: /data
+          {{- end }}
           resources: {{- toYaml .Values.redis.storage.resources | nindent 12 }}
           livenessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}
           readinessProbe: {{- tpl (toYaml .Values.redis.probe) . | nindent 12 }}

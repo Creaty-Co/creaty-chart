@@ -2,6 +2,7 @@
 
 /.idea/
 /manual/secrets/
+/secrets/
 
 ### Windows template
 # Windows thumbnail cache files

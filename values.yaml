@@ -200,6 +200,10 @@ redis:
         memory: 35Mi
       limits:
         memory: 45Mi
+    volumes:
+      data:
+        enabled: true
+        capacity: 1Gi
   celery:
     replicas: 1
     vars:
