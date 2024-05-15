@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platform-postgres-configs
+data: {{-
+    include "configmap" (
+      dict "_" $ "vars" .Values.platform_postgres.vars
+        "configs" .Values.platform_postgres.configs
+    )
+  }}

@@ -14,14 +14,6 @@
     {{- end }}
 {{- end }}
 
-{{- define "cal_domain" }}
-    {{- if .Values.cal_domain }}
-        {{- .Values.cal_domain }}
-    {{- else }}
-        {{- printf "%s-cal.creaty.club" .Release.Name }}
-    {{- end }}
-{{- end }}
-
 {{- define "api_image" -}}
 {{ .Values.api.image.reference }}:{{ tpl .Values.api.image.tag . }}
 {{- end }}

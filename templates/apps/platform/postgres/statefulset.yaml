@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: platform-postgres-statefulset
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels:
+      app: platform-postgres
+  replicas: {{ tpl (toString .Values.platform_postgres.replicas) . }}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: platform-postgres-data-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: do-block-storage-xfs-retain
+        resources:
+          requests:
+            storage: 2Gi
+  template:
+    metadata:
+      labels:
+        app: platform-postgres
+    spec:
+      securityContext:
+        fsGroup: 999
+      volumes:
+        - name: configs
+          configMap:
+            name: platform-postgres-configs
+            defaultMode: 0400
+        - name: tls
+          secret:
+            secretName: global-tls-secret
+            defaultMode: 0400
+      containers:
+        - name: platform-postgres
+          image: {{ .Values.platform_postgres.image }}
+          args: [-c, config_file={{ .Values.platform_postgres.configs.main.path }} ]
+          env: {{- include "env" (dict "_" $ "envs" .Values.platform_postgres.envs) | indent 12 }}
+          ports: {{- include "ports" .Values.platform_postgres.ports | indent 12 }}
+          volumeMounts: {{- include "configs" .Values.platform_postgres.configs | indent 12 }}
+            - name: platform-postgres-data-pvc
+              mountPath: /var/lib/postgresql/data/
+            - name: tls
+              mountPath: /tls/
+          resources: {{- toYaml .Values.platform_postgres.resources | nindent 12 }}
+          livenessProbe: {{- tpl (toYaml .Values.platform_postgres.probes.liveness) . | nindent 12 }}
+          readinessProbe: {{- tpl (toYaml .Values.platform_postgres.probes.readiness) . | nindent 12 }}

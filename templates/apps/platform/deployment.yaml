@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-deployment
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: {{ tpl (toString .Values.platform.replicas) . }}
+  selector:
+    matchLabels:
+      app: platform
+  template:
+    metadata:
+      labels:
+        app: platform
+    spec:
+      initContainers:
+        {{- include "init-wait-for-postgres" (dict "postgres_host" "platform-postgres") | indent 8 }}
+      containers:
+        - name: cal
+          image: {{ .Values.platform.image }}
+          env: {{- include "env" (dict "_" $ "envs" .Values.platform.envs) | indent 12 }}
+          ports: {{- include "ports" .Values.platform.ports | indent 12 }}
+          resources: {{- toYaml .Values.platform.resources | nindent 12 }}

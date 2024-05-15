@@ -3,6 +3,7 @@ enabled: true
 version: latest
 api_version: '{{ tpl .Values.version . }}'
 web_version: '{{ tpl .Values.version . }}'
+platform_version: '{{ tpl .Values.version . }}'
 sentry_release: '{{ tpl .Values.version . }}'
 
 global:
@@ -15,7 +16,7 @@ global:
         FIXER_ACCESS_KEY: change me !
         GOOGLE_APP_SECRET: change me !
         SENTRY_DSN: change me !
-      global-cal-secrets:
+      global-platform-secrets:
         CALENDSO_ENCRYPTION_KEY: change me !
         NEXTAUTH_SECRET: change me !
     kubernetes.io/tls:
@@ -29,7 +30,7 @@ secrets:
       SECRET_KEY: change me !
     postgres-secrets:
       POSTGRES_PASSWORD: change me !
-    cal-postgres-secrets:
+    platform-postgres-secrets:
       POSTGRES_PASSWORD: change me !
 
 api:
@@ -42,7 +43,7 @@ api:
   envs:
     WEB_DOMAIN: '{{ include "web_domain" . }}'
     API_DOMAIN: '{{ include "api_domain" . }}'
-    CAL_API_DOMAIN: cal
+    PLATFORM_API_DOMAIN: platform
     SECRET_KEY:
       secret: api-secrets
     DEBUG: "1"
@@ -78,12 +79,12 @@ api:
     DATABASE_URL: "psql://{{ .Values.postgres.envs.POSTGRES_USER }}:\
       $(POSTGRES_PASSWORD)@postgres:{{ .Values.postgres.ports.main }}/\
       {{ .Values.postgres.envs.POSTGRES_DB }}"
-    CAL_POSTGRES_PASSWORD:
-      secret: cal-postgres-secrets
+    PLATFORM_POSTGRES_PASSWORD:
+      secret: platform-postgres-secrets
       key: POSTGRES_PASSWORD
-    CAL_DATABASE_URL: "postgresql://{{ .Values.cal_postgres.envs.POSTGRES_USER }}:\
-      $(CAL_POSTGRES_PASSWORD)@cal-postgres:{{ .Values.cal_postgres.ports.main }}/\
-      {{ .Values.cal_postgres.envs.POSTGRES_DB }}"
+    PLATFORM_DATABASE_URL: "postgresql://{{ .Values.platform_postgres.envs.POSTGRES_USER }}:\
+      $(PLATFORM_POSTGRES_PASSWORD)@platform-postgres:{{ .Values.platform_postgres.ports.main }}/\
+      {{ .Values.platform_postgres.envs.POSTGRES_DB }}"
     REDIRECT_ON_UNSUBSCRIBE: https://{{ include "api_domain" . }}
     GOOGLE_APP_ID: 806432148973-frtnr0gekve3r4g0pdb14pq451fd7u07.apps.googleusercontent.com
     GOOGLE_APP_SECRET:
@@ -257,30 +258,32 @@ postgres:
     limits:
       memory: 57Mi
 
-cal:
-  image: calcom/cal.com:v3.1.5
+platform:
+  image:
+    reference: ghcr.io/creaty-co/creaty-platform/platform
+    tag: '{{ tpl .Values.platform_version . }}'
   replicas: 1
   ports:
     main: 3000
   envs:
-    NEXT_AUTH_URL: http://cal/api/auth
-    NEXT_PUBLIC_WEBAPP_URL: http://cal
+    NEXT_AUTH_URL: http://platform/api/auth
+    NEXT_PUBLIC_WEBAPP_URL: http://platform
     NEXTAUTH_SECRET:
-      secret: global-cal-secrets
+      secret: global-platform-secrets
     CALENDSO_ENCRYPTION_KEY:
-      secret: global-cal-secrets
+      secret: global-platform-secrets
     POSTGRES_PASSWORD:
-      secret: cal-postgres-secrets
-    DATABASE_URL: "postgresql://{{ .Values.cal_postgres.envs.POSTGRES_USER }}:\
-      $(POSTGRES_PASSWORD)@cal-postgres:{{ .Values.cal_postgres.ports.main }}/\
-      {{ .Values.cal_postgres.envs.POSTGRES_DB }}"
+      secret: platform-postgres-secrets
+    DATABASE_URL: "postgresql://{{ .Values.platform_postgres.envs.POSTGRES_USER }}:\
+      $(POSTGRES_PASSWORD)@platform-postgres:{{ .Values.platform_postgres.ports.main }}/\
+      {{ .Values.platform_postgres.envs.POSTGRES_DB }}"
   resources:
     requests:
       memory: 400Mi
     limits:
       memory: 800Mi
 
-cal_postgres:
+platform_postgres:
   image: postgres:15.3
   vars:
     shared_buffers: 8MB
@@ -293,12 +296,12 @@ cal_postgres:
   probes:
     liveness:
       exec:
-        command: [pg_isready, -U, '{{ .Values.cal_postgres.envs.POSTGRES_USER }}']
+        command: [pg_isready, -U, '{{ .Values.platform_postgres.envs.POSTGRES_USER }}']
       initialDelaySeconds: 15
       timeoutSeconds: 9
     readiness:
       exec:
-        command: [pg_isready, -U, '{{ .Values.cal_postgres.envs.POSTGRES_USER }}']
+        command: [pg_isready, -U, '{{ .Values.platform_postgres.envs.POSTGRES_USER }}']
       initialDelaySeconds: 15
       timeoutSeconds: 5
   ports:
