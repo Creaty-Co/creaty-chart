@@ -8,30 +8,6 @@ sentry_release: '{{ tpl .Values.version . }}'
 
 global:
   nodePorts: { }
-  secrets:
-    Opaque:
-      global-api-secrets:
-        CLOUDINARY_URL: change me !
-        EMAIL_HOST_PASSWORD: change me !
-        FIXER_ACCESS_KEY: change me !
-        GOOGLE_APP_SECRET: change me !
-        SENTRY_DSN: change me !
-      global-platform-secrets:
-        CALENDSO_ENCRYPTION_KEY: change me !
-        NEXTAUTH_SECRET: change me !
-    kubernetes.io/tls:
-      global-tls-secret:
-        tls.crt: change me !
-        tls.key: change me !
-
-secrets:
-  Opaque:
-    api-secrets:
-      SECRET_KEY: change me !
-    postgres-secrets:
-      POSTGRES_PASSWORD: change me !
-    platform-postgres-secrets:
-      POSTGRES_PASSWORD: change me !
 
 api:
   image:
