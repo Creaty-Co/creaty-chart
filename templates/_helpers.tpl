@@ -22,6 +22,10 @@
 {{ .Values.nginx.init.web.image.reference }}:{{ tpl .Values.nginx.init.web.image.tag . }}
 {{- end }}
 
+{{- define "platform_image" -}}
+{{ .Values.platform.image.reference }}:{{ tpl .Values.platform.image.tag . }}
+{{- end }}
+
 {{- define "configmap" }}
 {{- range $name, $config := .configs }}
   {{ $name }}: |
