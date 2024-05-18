@@ -19,7 +19,7 @@ api:
   envs:
     WEB_DOMAIN: '{{ include "web_domain" . }}'
     API_DOMAIN: '{{ include "api_domain" . }}'
-    PLATFORM_API_DOMAIN: platform
+    PLATFORM_API_URL: http://platform:3000/platform/api
     SECRET_KEY:
       secret: api-secrets
     DEBUG: "1"
@@ -242,8 +242,8 @@ platform:
   ports:
     main: 3000
   envs:
-    NEXT_AUTH_URL: http://platform/api/auth
-    NEXT_PUBLIC_WEBAPP_URL: http://platform
+    NEXT_PUBLIC_WEBAPP_URL: 'https://{{ tpl .Values.web_version . }}/platform'
+    NEXT_AUTH_URL: 'https://{{ tpl .Values.web_version . }}/platform/api/auth'
     NEXTAUTH_SECRET:
       secret: platform-secrets
     CALENDSO_ENCRYPTION_KEY:

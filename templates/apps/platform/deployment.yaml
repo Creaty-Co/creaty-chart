@@ -17,7 +17,7 @@ spec:
       initContainers:
         {{- include "init-wait-for-postgres" (dict "postgres_host" "platform-postgres") | indent 8 }}
       containers:
-        - name: cal
+        - name: platform
           image: {{ .Values.platform.image }}
           env: {{- include "env" (dict "_" $ "envs" .Values.platform.envs) | indent 12 }}
           ports: {{- include "ports" .Values.platform.ports | indent 12 }}
