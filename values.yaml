@@ -250,10 +250,10 @@ platform:
       secret: platform-secrets
     POSTGRES_PASSWORD:
       secret: platform-postgres-secrets
-    DATABASE_URL: "postgresql://{{ .Values.platform_postgres.envs.POSTGRES_USER }}:\
+    DATABASE_URL: &platform-envs-DATABASE_URL "postgresql://{{ .Values.platform_postgres.envs.POSTGRES_USER }}:\
       $(POSTGRES_PASSWORD)@platform-postgres:{{ .Values.platform_postgres.ports.main }}/\
       {{ .Values.platform_postgres.envs.POSTGRES_DB }}"
-    DATABASE_DIRECT_URL: "$(DATABASE_URL)"
+    DATABASE_DIRECT_URL: *platform-envs-DATABASE_URL
   resources:
     requests:
       memory: 400Mi
