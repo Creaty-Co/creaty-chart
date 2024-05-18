@@ -245,9 +245,9 @@ platform:
     NEXT_AUTH_URL: http://platform/api/auth
     NEXT_PUBLIC_WEBAPP_URL: http://platform
     NEXTAUTH_SECRET:
-      secret: global-platform-secrets
+      secret: platform-secrets
     CALENDSO_ENCRYPTION_KEY:
-      secret: global-platform-secrets
+      secret: platform-secrets
     POSTGRES_PASSWORD:
       secret: platform-postgres-secrets
     DATABASE_URL: "postgresql://{{ .Values.platform_postgres.envs.POSTGRES_USER }}:\
