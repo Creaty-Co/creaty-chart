@@ -8,6 +8,6 @@ spec:
     app: platform-postgres
   ports:
     - port: {{ .Values.platform_postgres.ports.main }}
-      {{- if and .Values.postgres.nodePorts .Values.platform_postgres.nodePorts.main }}
+      {{- if and .Values.platform_postgres.nodePorts .Values.platform_postgres.nodePorts.main }}
       nodePort: {{ tpl .Values.platform_postgres.nodePorts.main . }}
       {{- end }}
