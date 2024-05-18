@@ -253,6 +253,7 @@ platform:
     DATABASE_URL: "postgresql://{{ .Values.platform_postgres.envs.POSTGRES_USER }}:\
       $(POSTGRES_PASSWORD)@platform-postgres:{{ .Values.platform_postgres.ports.main }}/\
       {{ .Values.platform_postgres.envs.POSTGRES_DB }}"
+    DATABASE_DIRECT_URL: $(DATABASE_URL)
   resources:
     requests:
       memory: 400Mi
