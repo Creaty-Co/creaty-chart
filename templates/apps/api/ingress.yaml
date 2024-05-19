@@ -26,6 +26,16 @@ spec:
                 name: api
                 port:
                   number: 80
+    - host: {{ include "web_domain" . }}
+      http:
+        paths:
+          - path: /platform/token
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 80
     - host: {{ include "api_domain" . }}
       http:
         paths:
