@@ -19,7 +19,7 @@ api:
   envs:
     WEB_DOMAIN: '{{ include "web_domain" . }}'
     API_DOMAIN: '{{ include "api_domain" . }}'
-    PLATFORM_API_URL: http://platform:3000/platform/api
+    PLATFORM_API_URL: http://platform/platform/api
     SECRET_KEY:
       secret: api-secrets
     DEBUG: "1"
