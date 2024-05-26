@@ -242,8 +242,8 @@ platform:
   ports:
     main: 3000
   envs:
-    NEXT_PUBLIC_WEBAPP_URL: 'https://{{ tpl .Values.web_version . }}/platform'
-    NEXT_AUTH_URL: 'https://{{ tpl .Values.web_version . }}/platform/api/auth'
+    NEXT_PUBLIC_WEBAPP_URL: 'https://{{ include "web_domain" . }}/platform'
+    NEXT_AUTH_URL: 'https://{{ include "web_domain" . }}/platform/api/auth'
     NEXTAUTH_SECRET:
       secret: platform-secrets
     CALENDSO_ENCRYPTION_KEY:
