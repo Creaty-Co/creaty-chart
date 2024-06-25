@@ -13,6 +13,8 @@ metadata:
       gzip_http_version 1.1;
       gzip_min_length 256;
       gzip_types *;
+
+      limit_req zone={{ tpl .Values.api.ingress.limit_req_zone . }} burst=10 delay=2;
 spec:
   ingressClassName: nginx
   rules:

@@ -16,6 +16,8 @@ api:
   replicas: 1
   ports:
     main: 8000
+  ingress:
+    limit_req_zone: '{{ printf "%s_api" .Release.Name }}'
   envs:
     WEB_DOMAIN: '{{ include "web_domain" . }}'
     API_DOMAIN: '{{ include "api_domain" . }}'
