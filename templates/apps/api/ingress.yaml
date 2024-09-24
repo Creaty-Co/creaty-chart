@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: api-ingress
   annotations:
+    nginx.ingress.kubernetes.io/cors-allow-origin: "*"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       # gzip
       gzip on;
